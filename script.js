@@ -1,108 +1,210 @@
 (() => {
-  const $ = (selector, root = document) => root.querySelector(selector);
-  const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
+const $ = (s, root=document) => root.querySelector(s);
+const $$ = (s, root=document) => [...root.querySelectorAll(s)];
 
-  const menu = $('.menu-toggle');
-  const nav = $('.nav');
+const menu = $('.menu-toggle');
+const nav = $('.nav');
+menu.addEventListener('click', () => {
+const open = nav.classList.toggle('open');
+menu.setAttribute('aria-expanded', String(open));
+});
 
-  if (menu && nav) {
-    menu.addEventListener('click', () => {
-      const open = nav.classList.toggle('open');
-      menu.setAttribute('aria-expanded', String(open));
-    });
+$$('.nav a').forEach(a => a.addEventListener('click', () => {
+nav.classList.remove('open');
+menu.setAttribute('aria-expanded', 'false');
+}));
 
-    $$('.nav a').forEach(a => {
-      a.addEventListener('click', () => {
-        nav.classList.remove('open');
-        menu.setAttribute('aria-expanded', 'false');
-      });
-    });
-  }
+const navLinks = $$('.nav a');
+const sections = $$('main section[id]');
+const observer = new IntersectionObserver(entries => {
+entries.forEach(entry => {
+if (!entry.isIntersecting) return;
+navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + entry.target.id));
+});
+}, {rootMargin:'-35% 0px -55% 0px', threshold:0});
+sections.forEach(s => observer.observe(s));
 
-  const navLinks = $$('.nav a');
-  const sections = $$('main section[id]');
+const glow = $('.cursor-glow');
+window.addEventListener('pointermove', e => {
+glow.style.left = e.clientX + 'px';
+glow.style.top = e.clientY + 'px';
+}, {passive:true});
 
-  if ('IntersectionObserver' in window) {
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (!entry.isIntersecting) return;
+const audio = $('#audio'), player = $('#playerPanel'), playBtn = $('#playBtn'), seek = $('#seek'), volume = $('#volume');
+const currentTime = $('#currentTime'), duration = $('#duration'), toast = $('#musicToast');
+const shuffleBtn = $('#shuffleBtn'), repeatBtn = $('#repeatBtn');
+let musicAvailable = true;
+let shuffle = false;
+let repeat = false;
+let toastTimer;
 
-        navLinks.forEach(a => {
-          a.classList.toggle(
-            'active',
-            a.getAttribute('href') === '#' + entry.target.id
-          );
-        });
-      });
-    }, {
-      rootMargin: '-35% 0px -55% 0px',
-      threshold: 0
-    });
+const fmt = sec => {
+sec = Number.isFinite(sec) ? Math.max(0, Math.floor(sec)) : 0;
+return `${Math.floor(sec / 60)}:${String(sec % 60).padStart(2, '0')}`;
+};
 
-    sections.forEach(section => observer.observe(section));
-  }
+const setProgress = pct => seek.style.setProperty('--progress', `${Math.max(0, Math.min(100, pct))}%`);
 
-  const glow = $('.cursor-glow');
+const showToast = () => {
+clearTimeout(toastTimer);
+toast.classList.add('show');
+toastTimer = setTimeout(() => toast.classList.remove('show'), 4200);
+};
 
-  if (glow) {
-    window.addEventListener('pointermove', event => {
-      glow.style.left = event.clientX + 'px';
-      glow.style.top = event.clientY + 'px';
-    }, {
-      passive: true
-    });
-  }
+audio.volume = .85;
+volume.value = audio.volume;
+setProgress(0);
 
-  const IMAGE_EXTENSIONS = [
-    'jpg',
-    'jpeg',
-    'jfif',
-    'png',
-    'gif',
-    'webp',
-    'avif',
-    'bmp',
-    'svg',
-    'ico',
-    'tif',
-    'tiff'
-  ];
+audio.addEventListener('error', () => { musicAvailable = false; });
 
-  const VIDEO_EXTENSIONS = [
-    'mp4',
-    'webm',
-    'ogg',
-    'ogv',
-    'mov',
-    'm4v',
-    'avi',
-    'mkv'
-  ];
+audio.addEventListener('loadedmetadata', () => {
+musicAvailable = true;
+duration.textContent = fmt(audio.duration);
+currentTime.textContent = '0:00';
+seek.value = 0;
+setProgress(0);
+});
 
-  const AUDIO_EXTENSIONS = [
-    'mp3',
-    'wav',
-    'ogg',
-    'oga',
-    'm4a',
-    'aac',
-    'flac',
-    'opus',
-    'weba'
-  ];
+audio.addEventListener('timeupdate', () => {
+if (!Number.isFinite(audio.duration) || audio.duration <= 0) return;
+const pct = audio.currentTime / audio.duration * 100;
+seek.value = pct;
+setProgress(pct);
+currentTime.textContent = fmt(audio.currentTime);
+});
 
-  const getExtension = source => {
-    if (!source) return '';
+audio.addEventListener('play', () => {
+player.classList.add('is-playing');
+playBtn.textContent = 'Ⅱ';
+playBtn.setAttribute('aria-label', 'Pause music');
+});
 
-    const clean = source
-      .split('?')[0]
-      .split('#')[0];
+audio.addEventListener('pause', () => {
+player.classList.remove('is-playing');
+playBtn.textContent = '▶';
+playBtn.setAttribute('aria-label', 'Play music');
+});
 
-    const parts = clean.split('.');
-    return parts.length > 1
-      ? parts.pop().toLowerCase()
-      : '';
-  };
+audio.addEventListener('ended', () => {
+if (repeat) {
+audio.currentTime = 0;
+audio.play().catch(() => {});
+return;
+}
+player.classList.remove('is-playing');
+});
+
+const play = async () => {
+if (!musicAvailable) { showToast(); return; }
+try {
+if (audio.paused) await audio.play();
+else audio.pause();
+} catch { showToast(); }
+};
+
+playBtn.addEventListener('click', play);
+$('#quickMusic').addEventListener('click', play);
+$('#musicNav').addEventListener('click', () => document.querySelector('#playerPanel').scrollIntoView({behavior:'smooth', block:'center'}));
+
+seek.addEventListener('input', () => {
+if (!Number.isFinite(audio.duration) || audio.duration <= 0) return;
+audio.currentTime = (Number(seek.value) / 100) * audio.duration;
+setProgress(Number(seek.value));
+});
+
+volume.addEventListener('input', () => {
+audio.volume = Number(volume.value);
+});
+
+$('#prevBtn').addEventListener('click', () => {
+audio.currentTime = 0;
+if (audio.paused && musicAvailable) play();
+});
+
+$('#nextBtn').addEventListener('click', () => {
+audio.currentTime = 0;
+if (shuffle && Number.isFinite(audio.duration) && audio.duration > 0) {
+audio.currentTime = Math.random() * Math.max(0, audio.duration - 1);
+}
+if (audio.paused && musicAvailable) play();
+});
+
+shuffleBtn.addEventListener('click', () => {
+shuffle = !shuffle;
+shuffleBtn.classList.toggle('active', shuffle);
+shuffleBtn.setAttribute('aria-pressed', String(shuffle));
+});
+
+repeatBtn.addEventListener('click', () => {
+repeat = !repeat;
+repeatBtn.classList.toggle('active', repeat);
+repeatBtn.setAttribute('aria-pressed', String(repeat));
+});
+
+$('#likeTrack').addEventListener('click', e => e.currentTarget.classList.toggle('active'));
+
+const characterModal = $('#characterModal');
+const cImage = $('#characterModalImage'), cName = $('#characterModalName'), cSub = $('#characterModalSub');
+
+const openModal = el => {
+el.classList.add('open');
+el.setAttribute('aria-hidden','false');
+document.body.classList.add('modal-open');
+};
+
+const closeAll = () => {
+$$('.modal.open').forEach(m => {
+m.classList.remove('open');
+m.setAttribute('aria-hidden','true');
+});
+document.body.classList.remove('modal-open');
+};
+
+$$('.character-card').forEach(card => card.addEventListener('click', () => {
+cImage.src = card.dataset.image;
+cImage.alt = card.dataset.name;
+cName.textContent = card.dataset.name;
+cSub.textContent = card.dataset.sub;
+openModal(characterModal);
+}));
+
+const lightbox = $('#lightbox'), modalImage = $('#modalImage'), modalCaption = $('#modalCaption');
+
+$$('.gallery-item').forEach(item => item.addEventListener('click', () => {
+modalImage.src = item.dataset.lightbox;
+modalCaption.textContent = item.dataset.caption || '';
+modalImage.alt = item.dataset.caption || '';
+openModal(lightbox);
+}));
+
+$$('.modal-close').forEach(b => b.addEventListener('click', closeAll));
+$$('.modal').forEach(m => m.addEventListener('click', e => {
+if(e.target === m) closeAll();
+}));
+
+document.addEventListener('keydown', e => {
+if(e.key === 'Escape') closeAll();
+});
+
+const box = $('#messageBox'), count = $('#charCount'), send = $('#sendMessage'), status = $('#messageStatus');
+
+box.addEventListener('input', () => count.textContent = `${box.value.length} / 500`);
+
+send.addEventListener('click', () => {
+if(!box.value.trim()) {
+status.textContent = 'Write a little something first ✦';
+return;
+}
+
+status.textContent = 'Message saved for this visit. ✦';
+send.textContent = 'SENT ✓';
+
+setTimeout(() => {
+  send.textContent='SEND MESSAGE ✦';
+}, 1800);
+
+});
+})();  };
 
   const isImage = source =>
     IMAGE_EXTENSIONS.includes(getExtension(source));
