@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#090714" />
+  <meta name="description" content="Ruby birthday tribute — a starry, pink, anime-inspired one-page celebration." />
+  <title>Ruby ✦ Happy Birthday</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&family=Parisienne&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div id="stars" aria-hidden="true"></div>
+  <div class="cursor-glow" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <a class="brand" href="#home" aria-label="Ruby home">+<span>Ruby</span>✦</a>
+    <button class="menu-toggle" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    <nav class="nav" aria-label="Primary">
+      <a href="#home" class="active">HOME<span class="nav-star">✦</span></a>
+      <a href="#about">ABOUT</a>
+      <a href="#oshi">OSHI NO KO</a>
+      <a href="#yuwa">UWUWA</a>
+      <a href="#gallery">GALLERY</a>
+      <a href="#message">MESSAGE</a>
+      <button class="music-nav" id="musicNav" aria-label="Open music controls">♫</button>
+    </nav>
+  </header>
+
+  <main>
+    <section id="home" class="hero section-anchor">
+      <div class="hero-bg"></div>
+      <div class="hero-vignette"></div>
+      <div class="hero-content">
+        <div class="hero-copy">
+          <p class="eyebrow">HAPPY BIRTHDAY</p>
+          <h1>Ruby<span class="sparkle">✧</span></h1>
+          <p class="script">Shine like the star you were born to be. <span>☆</span></p>
+          <p class="hero-note">To the brightest star in our lives.<br>May your year be filled with love, happiness,<br class="desktop-only"> and all the things that make you smile.</p>
+          <div class="quick-links">
+            <a href="#message" class="diamond" aria-label="Send a message">☆</a>
+            <a href="#about" class="diamond" aria-label="About Ruby">♡</a>
+            <button class="diamond" id="quickMusic" aria-label="Play music">♫</button>
+            <a href="#oshi" class="diamond" aria-label="Favorite characters">♧</a>
+            <a href="#gallery" class="diamond" aria-label="Gallery">✦</a>
+          </div>
+        </div>
+      </div>
+      <div class="jp-sign" aria-label="Japanese phrase">推<br>し<br>の<br>子</div>
+    </section>
+
+    <section class="dashboard section-anchor" id="about">
+      <div class="panel about-panel">
+        <div class="panel-title">✦ &nbsp;ABOUT RUBY&nbsp; ✦</div>
+        <div class="about-grid">
+          <div class="portrait-wrap"><img src="assets/ruby.jpg" alt="Ruby" /></div>
+          <div class="about-copy">
+            <p>A kind soul with a heart of gold.<br>You light up every room<br>just like <span>Ruby Hoshino!</span></p>
+            <p>You’re talented, adorable,<br>and absolutely amazing<br>just the way you are.</p>
+          </div>
+        </div>
+        <div class="signature">Ruby</div>
+        <div class="heart-float">♥</div>
+      </div>
+
+      <div class="panel player-panel" id="playerPanel">
+        <div class="album-art"><img src="assets/star-train.jpg" alt="Star Train cover art" /><span class="album-sheen" aria-hidden="true"></span></div>
+        <div class="track-info">
+          <div class="track-title">STAR TRAIN</div>
+          <div class="track-artist">B Komachi (OSHI NO KO)</div>
+          <button class="track-like" id="likeTrack" aria-label="Favorite track">♥</button>
+        </div>
+        <div class="progress-row"><span id="currentTime">0:00</span><input id="seek" type="range" min="0" max="100" value="0" aria-label="Music progress"><span id="duration">0:00</span></div>
+        <div class="controls">
+          <button aria-label="Shuffle" class="small-control toggle-control" id="shuffleBtn">⤨</button>
+          <button aria-label="Previous" class="small-control" id="prevBtn">◀</button>
+          <button aria-label="Play or pause" class="play-btn" id="playBtn">▶</button>
+          <button aria-label="Next" class="small-control" id="nextBtn">▶</button>
+          <button aria-label="Repeat" class="small-control toggle-control" id="repeatBtn">↻</button>
+        </div>
+        <div class="visualizer" id="visualizer" aria-hidden="true"><i style="--i:0"></i><i style="--i:1"></i><i style="--i:2"></i><i style="--i:3"></i><i style="--i:4"></i><i style="--i:5"></i><i style="--i:6"></i><i style="--i:7"></i><i style="--i:8"></i><i style="--i:9"></i><i style="--i:10"></i><i style="--i:11"></i><i style="--i:12"></i><i style="--i:13"></i><i style="--i:14"></i><i style="--i:15"></i><i style="--i:16"></i><i style="--i:17"></i></div>
+        <div class="quote">“No matter how dark it gets,<br>you will always shine.” &nbsp; ✦</div>
+        <div class="volume-row"><span>◒</span><input id="volume" type="range" min="0" max="1" value="0.85" step="0.01" aria-label="Volume"><span>♬</span></div>
+      </div>
+
+      <div class="panel favorites-panel" id="oshi">
+        <div class="panel-title">✦ &nbsp;FAVORITE CHARACTERS&nbsp; ✦</div>
+        <div class="character-grid">
+          <button class="character-card" data-name="SHOREKEEPER" data-sub="Wuthering Waves" data-image="assets/shorekeeper.jpg">
+            <img src="assets/shorekeeper.jpg" alt="Shorekeeper" />
+            <span class="card-label"><strong>SHOREKEEPER</strong><small>Wuthering Waves</small></span>
+            <span class="card-icon">◉</span>
+          </button>
+          <button class="character-card" data-name="ROVER" data-sub="Wuthering Waves" data-image="assets/rover.jpg">
+            <img src="assets/rover.jpg" alt="Rover" />
+            <span class="card-label"><strong>ROVER</strong><small>Wuthering Waves</small></span>
+            <span class="card-icon">✳</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section id="yuwa" class="content-section section-anchor">
+      <div class="section-heading"><span>✦</span><h2>UWUWA</h2><span>✦</span></div>
+      <p class="section-lead">A little constellation of things that make Ruby special.</p>
+      <div class="uwuwa-grid">
+        <article><b>01</b><h3>SPARKLE</h3><p>A star deserves a sky full of lights. Keep shining, even on quiet days.</p></article>
+        <article><b>02</b><h3>SMILE</h3><p>Your smile is the kind of magic that makes an ordinary day feel special.</p></article>
+        <article><b>03</b><h3>HEART</h3><p>May every new chapter bring more love, laughter, and gentle moments.</p></article>
+      </div>
+    </section>
+
+    <section id="gallery" class="content-section section-anchor gallery-section">
+      <div class="section-heading"><span>✦</span><h2>GALLERY</h2><span>✦</span></div>
+      <div class="gallery-grid">
+        <button class="gallery-item tall" data-lightbox="assets/hero.jpg" data-caption="Ruby — the brightest star"><img src="assets/hero.jpg" alt="Ruby birthday hero" /></button>
+        <button class="gallery-item" data-lightbox="assets/ruby.jpg" data-caption="Ruby"><img src="assets/ruby.jpg" alt="Ruby portrait" /></button>
+        <button class="gallery-item" data-lightbox="assets/shorekeeper.jpg" data-caption="Shorekeeper — Wuthering Waves"><img src="assets/shorekeeper.jpg" alt="Shorekeeper" /></button>
+        <button class="gallery-item" data-lightbox="assets/rover.jpg" data-caption="Rover — Wuthering Waves"><img src="assets/rover.jpg" alt="Rover" /></button>
+        <button class="gallery-item" data-lightbox="assets/star-train.jpg" data-caption="Star Train — B Komachi"><img src="assets/star-train.jpg" alt="Star Train cover" /></button>
+      </div>
+    </section>
+
+    <section id="message" class="content-section message-section section-anchor">
+      <div class="section-heading"><span>✦</span><h2>MESSAGE</h2><span>✦</span></div>
+      <div class="message-card">
+        <p class="message-kicker">TO RUBY, WITH LOVE</p>
+        <textarea id="messageBox" maxlength="500" placeholder="Write a little birthday message here..."></textarea>
+        <div class="message-actions"><span id="charCount">0 / 500</span><button id="sendMessage">SEND MESSAGE ✦</button></div>
+        <p id="messageStatus" class="status" role="status"></p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-line"><span></span><span>〽</span><span></span></div>
+    <div class="footer-quote"><span>✦</span> 「君は完璧で究極のアイドル」 <span>✦</span><small>You are the perfect, ultimate idol.</small></div>
+    <div class="footer-meta"><span>Made with <b>♥</b> for Ruby</span><span>Keep shining, always. ☆</span></div>
+  </footer>
+
+  <audio id="audio" preload="metadata" src="assets/music.mp3"></audio>
+  <div id="musicToast" class="music-toast">Place your music file at <b>assets/music.mp3</b> to activate the player.</div>
+
+  <div class="modal" id="lightbox" aria-hidden="true">
+    <button class="modal-close" aria-label="Close">×</button>
+    <img class="modal-image" id="modalImage" alt="" />
+    <div class="modal-caption" id="modalCaption"></div>
+  </div>
+  <div class="modal" id="characterModal" aria-hidden="true">
+    <button class="modal-close" aria-label="Close">×</button>
+    <div class="character-modal-card"><img id="characterModalImage" alt="" /><div><h3 id="characterModalName"></h3><p id="characterModalSub"></p><p>Favorite character ✦</p></div></div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
