@@ -31,7 +31,9 @@
 
   <main>
     <section id="home" class="hero section-anchor">
-      <div class="hero-bg"></div>
+      <video class="hero-bg" autoplay muted loop playsinline preload="metadata">
+        <source src="assets/hero.mp4" type="video/mp4">
+      </video>
       <div class="hero-vignette"></div>
       <div class="hero-content">
         <div class="hero-copy">
@@ -115,11 +117,21 @@
     <section id="gallery" class="content-section section-anchor gallery-section">
       <div class="section-heading"><span>✦</span><h2>GALLERY</h2><span>✦</span></div>
       <div class="gallery-grid">
-        <button class="gallery-item tall" data-lightbox="assets/hero.jpg" data-caption="Ruby — the brightest star"><img src="assets/hero.jpg" alt="Ruby birthday hero" /></button>
-        <button class="gallery-item" data-lightbox="assets/ruby.jpg" data-caption="Ruby"><img src="assets/ruby.jpg" alt="Ruby portrait" /></button>
-        <button class="gallery-item" data-lightbox="assets/shorekeeper.jpg" data-caption="Shorekeeper — Wuthering Waves"><img src="assets/shorekeeper.jpg" alt="Shorekeeper" /></button>
-        <button class="gallery-item" data-lightbox="assets/rover.jpg" data-caption="Rover — Wuthering Waves"><img src="assets/rover.jpg" alt="Rover" /></button>
-        <button class="gallery-item" data-lightbox="assets/star-train.jpg" data-caption="Star Train — B Komachi"><img src="assets/star-train.jpg" alt="Star Train cover" /></button>
+        <button class="gallery-item tall" data-lightbox="assets/hero.mp4" data-caption="Ruby — the brightest star">
+          <video src="assets/hero.mp4" muted loop playsinline preload="metadata" aria-label="Ruby birthday hero"></video>
+        </button>
+        <button class="gallery-item" data-lightbox="assets/ruby.jpg" data-caption="Ruby">
+          <img src="assets/ruby.jpg" alt="Ruby portrait" />
+        </button>
+        <button class="gallery-item" data-lightbox="assets/shorekeeper.jpg" data-caption="Shorekeeper — Wuthering Waves">
+          <img src="assets/shorekeeper.jpg" alt="Shorekeeper" />
+        </button>
+        <button class="gallery-item" data-lightbox="assets/rover.jpg" data-caption="Rover — Wuthering Waves">
+          <img src="assets/rover.jpg" alt="Rover" />
+        </button>
+        <button class="gallery-item" data-lightbox="assets/star-train.jpg" data-caption="Star Train — B Komachi">
+          <img src="assets/star-train.jpg" alt="Star Train cover" />
+        </button>
       </div>
     </section>
 
@@ -145,12 +157,20 @@
 
   <div class="modal" id="lightbox" aria-hidden="true">
     <button class="modal-close" aria-label="Close">×</button>
-    <img class="modal-image" id="modalImage" alt="" />
+    <div id="modalMedia"></div>
     <div class="modal-caption" id="modalCaption"></div>
   </div>
+
   <div class="modal" id="characterModal" aria-hidden="true">
     <button class="modal-close" aria-label="Close">×</button>
-    <div class="character-modal-card"><img id="characterModalImage" alt="" /><div><h3 id="characterModalName"></h3><p id="characterModalSub"></p><p>Favorite character ✦</p></div></div>
+    <div class="character-modal-card">
+      <div id="characterModalMedia"></div>
+      <div>
+        <h3 id="characterModalName"></h3>
+        <p id="characterModalSub"></p>
+        <p>Favorite character ✦</p>
+      </div>
+    </div>
   </div>
 
   <script src="script.js"></script>
