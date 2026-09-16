@@ -1,281 +1,87 @@
-(()=>{
-const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)],menu=$('.menu-toggle'),nav=$('.nav');
+(()=>{"use strict";
 
-menu?.addEventListener('click',()=>{const o=nav.classList.toggle('open');menu.setAttribute('aria-expanded',String(o))});
-$$('.nav a').forEach(a=>a.addEventListener('click',()=>{nav?.classList.remove('open');menu?.setAttribute('aria-expanded','false')}));
+const $=(s,e=document)=>e.querySelector(s),$$=(s,e=document)=>[...e.querySelectorAll(s)];
+const body=document.body,audio=$("#audio"),panel=$("#playerPanel"),play=$("#playBtn"),seek=$("#seek"),volume=$("#volume");
+const current=$("#currentTime"),duration=$("#duration"),shuffle=$("#shuffleBtn"),repeat=$("#repeatBtn"),prev=$("#prevBtn"),next=$("#nextBtn");
+const like=$("#likeTrack"),musicNav=$("#musicNav"),quickMusic=$("#quickMusic"),toast=$("#musicToast");
+const menu=$("#menuToggle")||$(".menu-toggle"),nav=$("#mainNav"),glow=$(".cursor-glow");
+const lightbox=$("#lightbox"),modalMedia=$("#modalMedia"),modalCaption=$("#modalCaption"),charModal=$("#characterModal");
+const charMedia=$("#characterModalMedia"),charName=$("#characterModalName"),charSub=$("#characterModalSub");
+const messageBox=$("#messageBox"),charCount=$("#charCount"),sendMessage=$("#sendMessage"),messageStatus=$("#messageStatus");
 
-const links=$$('.nav a'),sections=$$('main section[id]');
-if('IntersectionObserver'in window){const ob=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;links.forEach(a=>a.classList.toggle('active',a.hash==='#'+e.target.id))}),{rootMargin:'-35% 0 -55%'});sections.forEach(s=>ob.observe(s))}
+const clamp=(v,a,b)=>Math.min(Math.max(v,a),b);
+const reduced=()=>window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches===true;
+const fmt=s=>!Number.isFinite(s)||s<0?"0:00":`${Math.floor(s/60)}:${Math.floor(s%60).toString().padStart(2,"0")}`;
+const progress=(el,v)=>el&&el.style.setProperty("--progress",`${clamp(Number(v)||0,0,100)}%`);
 
-const glow=$('.cursor-glow');
-addEventListener('pointermove',e=>{if(!glow)return;glow.style.left=e.clientX+'px';glow.style.top=e.clientY+'px'},{passive:true});
+const closeMenu=()=>{if(!nav||!menu)return;nav.classList.remove("open");menu.setAttribute("aria-expanded","false");menu.setAttribute("aria-label","Open menu")};
+menu?.addEventListener("click",()=>{const open=nav?.classList.toggle("open");menu.setAttribute("aria-expanded",String(open));menu.setAttribute("aria-label",open?"Close menu":"Open menu")});
+$$(".nav a").forEach(a=>a.addEventListener("click",closeMenu));
+document.addEventListener("click",e=>{if(nav?.classList.contains("open")&&!nav.contains(e.target)&&!menu?.contains(e.target))closeMenu()});
+window.addEventListener("resize",()=>{if(innerWidth>820)closeMenu()});
 
-const hero=$('.hero-video');
-const videos=$$('video');
+if(glow&&!reduced()){let raf=0,x=innerWidth/2,y=innerHeight/2;addEventListener("pointermove",e=>{if(e.pointerType&&e.pointerType!=="mouse")return;x=e.clientX;y=e.clientY;if(!raf)raf=requestAnimationFrame(()=>{raf=0;glow.style.left=`${x}px`;glow.style.top=`${y}px`})},{passive:true})}
 
-const observeVideo=(v,ratio=.05)=>{
-if(!v||!'IntersectionObserver'in window)return;
-let visible=false;
-const io=new IntersectionObserver(es=>{
-const e=es[0];visible=e.isIntersecting&&e.intersectionRatio>=ratio;
-if(!visible){v.pause();return}
-if(!document.hidden&&v.paused)v.play().catch(()=>{});
-},{threshold:[0,.05,.25,.5]});
-io.observe(v);
-document.addEventListener('visibilitychange',()=>{if(document.hidden)v.pause();else if(visible)v.play().catch(()=>{})});
-};
+const links=$$(".nav a[href^='#']"),sections=links.map(a=>$(a.getAttribute("href"))).filter(Boolean);
+const setActive=id=>links.forEach(a=>a.classList.toggle("active",a.getAttribute("href")===`#${id}`));
+if("IntersectionObserver"in window) new IntersectionObserver(es=>{const v=es.filter(e=>e.isIntersecting).sort((a,b)=>b.intersectionRatio-a.intersectionRatio)[0];if(v?.target.id)setActive(v.target.id)},{rootMargin:"-25% 0px -55% 0px",threshold:[0,.15,.35,.6]}).observe(...sections);
+$$(".nav a,.quick-links a,.brand").forEach(a=>a.addEventListener("click",e=>{const id=a.getAttribute("href");if(!id?.startsWith("#"))return;const t=$(id);if(!t)return;e.preventDefault();t.scrollIntoView({behavior:reduced()?"auto":"smooth",block:"start"});history.replaceState?.(null,"",id)}));
 
-if(hero){hero.muted=true;hero.playsInline=true;observeVideo(hero,.08);if(!document.hidden)hero.play().catch(()=>{})}
-videos.forEach(v=>{if(v!==hero)observeVideo(v,.05)});
-
-const ext=s=>{try{return new URL(s,location.href).pathname.split('.').pop().toLowerCase()}catch{return s?.split(/[?#]/)[0].split('.').pop().toLowerCase()||''}},isVideo=s=>['mp4','webm','ogg','mov'].includes(ext(s));
-
-const setupMedia=(box,src,o={})=>{
-if(!box||!src)return null;
-box.innerHTML='';
-const v=isVideo(src),m=document.createElement(v?'video':'img');
-m.src=src;
-if(v){m.autoplay=!!o.autoplay;m.muted=o.muted!==false;m.loop=!!o.loop;m.controls=!!o.controls;m.playsInline=true;m.preload='metadata'}
-else m.alt=o.alt||'';
-m.onerror=()=>box.innerHTML='<div class="media-fallback">Unable to load this media file.</div>';
-box.appendChild(m);
-if(v&&o.autoplay)m.play().catch(()=>{});
-return m
-};
-
-const audio=$('#audio'),player=$('#playerPanel'),playBtn=$('#playBtn'),seek=$('#seek'),volume=$('#volume'),time=$('#currentTime'),duration=$('#duration'),toast=$('#musicToast'),shuffleBtn=$('#shuffleBtn'),repeatBtn=$('#repeatBtn');
-let musicAvailable=false,shuffle=false,repeat=false,toastTimer,volumeLevel=.85;
-const MUSIC_SOURCE='assets/music.mp3';
-
-const fmt=s=>{s=Number.isFinite(s)?Math.max(0,Math.floor(s)):0;return`${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`};
-
-const setProgress=(i,p)=>{
-if(!i)return;
-const n=Math.max(0,Math.min(100,Number(p)||0));
-i.style.setProperty('--progress',`${n}%`);
-};
-
-const syncSeek=()=>{
-if(!audio||!seek)return;
-const d=audio.duration,p=Number.isFinite(d)&&d>0?audio.currentTime/d*100:0;
-const n=Math.max(0,Math.min(100,p));
-seek.value=String(n);
-setProgress(seek,n);
-};
-
-const syncVolume=()=>{
-if(!volume)return;
-const v=Math.max(0,Math.min(1,Number(volume.value)||0));
-volume.value=String(v);
-setProgress(volume,v*100);
-};
-
-const showToast=m=>{
-if(!toast)return;
-toast.textContent=m;
-clearTimeout(toastTimer);
-toast.classList.remove('show');
-void toast.offsetWidth;
-toast.classList.add('show');
-toastTimer=setTimeout(()=>toast.classList.remove('show'),4200);
-};
-
-if(seek){seek.min='0';seek.max='100';seek.step='0.1';seek.value='0';setProgress(seek,0)}
-if(volume){volume.min='0';volume.max='1';volume.step='0.01';volume.value=String(volumeLevel);syncVolume()}
-
-const resetPlayer=()=>{
-musicAvailable=false;
-if(seek)seek.value='0';
-if(time)time.textContent='0:00';
-if(duration)duration.textContent='0:00';
-setProgress(seek,0);
-player?.classList.remove('is-playing');
-if(playBtn){playBtn.textContent='▶';playBtn.setAttribute('aria-label','Play music')}
-};
+let shuffleOn=false,repeatOn=false;
+const SRC="assets/music.mp3";
+const showToast=(msg,persist=false)=>{if(!toast)return;toast.innerHTML=msg;toast.classList.add("show");clearTimeout(showToast.t);if(!persist)showToast.t=setTimeout(()=>toast.classList.remove("show"),4500)};
+const hideToast=()=>{if(!toast)return;clearTimeout(showToast.t);toast.classList.remove("show")};
+const updatePlay=()=>{if(!audio||!play)return;const on=!audio.paused&&!audio.ended;panel?.classList.toggle("is-playing",on);play.textContent=on?"❚❚":"▶";play.setAttribute("aria-label",on?"Pause music":"Play music")};
+const sync=()=>{if(!audio)return;const d=Number.isFinite(audio.duration)?audio.duration:0,c=Number.isFinite(audio.currentTime)?audio.currentTime:0;if(current)current.textContent=fmt(c);if(duration)duration.textContent=fmt(d);if(seek){const p=d?c/d*100:0;seek.value=String(p);progress(seek,p)}if(volume)progress(volume,Number(volume.value)*100)};
+const setSrc=()=>{if(audio&&audio.getAttribute("src")!==SRC){audio.src=SRC;audio.load()}};
+const playMusic=async()=>{if(!audio)return;setSrc();try{await audio.play();hideToast();updatePlay();sync()}catch{if(audio.error){showToast("Place your music file at <b>assets/music.mp3</b> to activate the player.",true)}}};
+const toggleMusic=()=>audio&&(audio.paused||audio.ended?playMusic():(audio.pause(),updatePlay()));
+const seekTo=v=>{if(!audio||!Number.isFinite(audio.duration)||audio.duration<=0)return;audio.currentTime=audio.duration*clamp(Number(v)||0,0,100)/100;sync()};
 
 if(audio){
-audio.src=MUSIC_SOURCE;
-audio.preload='metadata';
-audio.volume=volumeLevel;
-audio.muted=volumeLevel<=0;
-
-audio.addEventListener('loadedmetadata',()=>{
-if(!Number.isFinite(audio.duration)||audio.duration<=0)return;
-musicAvailable=true;
-if(duration)duration.textContent=fmt(audio.duration);
-if(time)time.textContent=fmt(audio.currentTime);
-syncSeek();
-});
-
-audio.addEventListener('durationchange',()=>{
-if(Number.isFinite(audio.duration)&&audio.duration>0){
-musicAvailable=true;
-if(duration)duration.textContent=fmt(audio.duration);
-syncSeek();
-}
-});
-
-audio.addEventListener('canplay',()=>musicAvailable=true);
-
-audio.addEventListener('error',()=>{
-musicAvailable=false;
-player?.classList.remove('is-playing');
-if(playBtn){playBtn.textContent='▶';playBtn.setAttribute('aria-label','Play music')}
-});
-
-audio.addEventListener('timeupdate',()=>{
-if(!Number.isFinite(audio.duration)||audio.duration<=0)return;
-if(time)time.textContent=fmt(audio.currentTime);
-syncSeek();
-});
-
-audio.addEventListener('play',()=>{
-player?.classList.add('is-playing');
-if(playBtn){playBtn.textContent='Ⅱ';playBtn.setAttribute('aria-label','Pause music')}
-});
-
-audio.addEventListener('pause',()=>{
-player?.classList.remove('is-playing');
-if(playBtn){playBtn.textContent='▶';playBtn.setAttribute('aria-label','Play music')}
-});
-
-audio.addEventListener('ended',async()=>{
-if(repeat){
-audio.currentTime=0;
-syncSeek();
-try{await audio.play()}catch{showToast('Tap play to continue the music. ✦')}
-return;
-}
-if(seek){seek.value='100';setProgress(seek,100)}
-if(time&&Number.isFinite(audio.duration))time.textContent=fmt(audio.duration);
-setTimeout(resetPlayer,120);
-});
+setSrc();
+audio.volume=clamp(Number(volume?.value??.85),0,1);
+audio.addEventListener("loadedmetadata",()=>{hideToast();sync()});
+audio.addEventListener("canplay",hideToast);
+audio.addEventListener("timeupdate",sync);
+audio.addEventListener("durationchange",sync);
+audio.addEventListener("volumechange",sync);
+audio.addEventListener("play",updatePlay);
+audio.addEventListener("pause",updatePlay);
+audio.addEventListener("ended",()=>{updatePlay();if(repeatOn){audio.currentTime=0;playMusic()}});
+audio.addEventListener("error",()=>{updatePlay();showToast("Place your music file at <b>assets/music.mp3</b> to activate the player.",true)});
+setTimeout(()=>{if(audio.error)showToast("Place your music file at <b>assets/music.mp3</b> to activate the player.",true)},1400)
 }
 
-const play=async()=>{
-if(!audio)return;
-if(!musicAvailable||audio.error){
-showToast('Add your music file at assets/music.mp3 to activate the player. ✦');
-return;
-}
-try{
-if(audio.paused)await audio.play();
-else audio.pause();
-}catch{
-showToast('Playback failed. Check your music file. ✦');
-}
-};
+play?.addEventListener("click",toggleMusic);
+quickMusic?.addEventListener("click",toggleMusic);
+musicNav?.addEventListener("click",()=>{toggleMusic();panel?.scrollIntoView({behavior:reduced()?"auto":"smooth",block:"center"})});
+prev?.addEventListener("click",()=>{if(!audio)return;audio.currentTime=0;sync()});
+next?.addEventListener("click",()=>{if(!audio)return;audio.currentTime=0;playMusic()});
+shuffle?.addEventListener("click",()=>{shuffleOn=!shuffleOn;shuffle.classList.toggle("active",shuffleOn);shuffle.setAttribute("aria-pressed",String(shuffleOn));showToast(shuffleOn?"Shuffle is on ✦":"Shuffle is off.")});
+repeat?.addEventListener("click",()=>{repeatOn=!repeatOn;repeat.classList.toggle("active",repeatOn);repeat.setAttribute("aria-pressed",String(repeatOn));showToast(repeatOn?"Repeat is on ✦":"Repeat is off.")});
+like?.addEventListener("click",()=>{like.classList.toggle("active");like.setAttribute("aria-pressed",String(like.classList.contains("active")));try{localStorage.setItem("rubyBirthdayLikedTrack",String(like.classList.contains("active")))}catch{}});
+try{const l=localStorage.getItem("rubyBirthdayLikedTrack")==="true";like?.classList.toggle("active",l);like?.setAttribute("aria-pressed",String(l))}catch{}
+seek?.addEventListener("input",()=>seekTo(seek.value));
+volume?.addEventListener("input",()=>{if(audio)audio.volume=clamp(Number(volume.value),0,1);progress(volume,Number(volume.value)*100)});
+progress(seek,seek?.value||0);progress(volume,Number(volume?.value||.85)*100);updatePlay();sync();
 
-playBtn?.addEventListener('click',play);
-$('#quickMusic')?.addEventListener('click',play);
-$('#musicNav')?.addEventListener('click',()=>$('#playerPanel')?.scrollIntoView({behavior:'smooth',block:'center'}));
+const closeModal=m=>{if(!m)return;m.classList.remove("open");m.setAttribute("aria-hidden","true");$$("video",m).forEach(v=>{try{v.pause();v.removeAttribute("src");v.load()}catch{}});if(![lightbox,charModal].some(x=>x?.classList.contains("open")))body.classList.remove("modal-open")};
+const openModal=m=>{if(!m)return;m.classList.add("open");m.setAttribute("aria-hidden","false");body.classList.add("modal-open")};
+const openLightbox=(src,caption="")=>{if(!lightbox||!modalMedia)return;modalMedia.innerHTML="";if(modalCaption)modalCaption.textContent=caption;const video=/\.(mp4|webm|ogg)(\?.*)?$/i.test(src);if(video){const v=document.createElement("video");v.src=src;v.controls=v.autoplay=true;v.loop=true;v.playsInline=true;v.preload="metadata";v.setAttribute("aria-label",caption||"Gallery video");v.onerror=()=>{modalMedia.innerHTML='<div class="media-fallback">This media could not be loaded.</div>'};modalMedia.appendChild(v);openModal(lightbox);v.play().catch(()=>{})}else{const img=document.createElement("img");img.src=src;img.alt=caption||"Gallery image";img.onerror=()=>{modalMedia.innerHTML='<div class="media-fallback">This image could not be loaded.</div>'};modalMedia.appendChild(img);openModal(lightbox)}};
+$$(".gallery-item[data-lightbox]").forEach(i=>i.addEventListener("click",()=>openLightbox(i.dataset.lightbox,i.dataset.caption||"")));
+$$(".gallery-item video").forEach(v=>{v.muted=true;v.addEventListener("mouseenter",()=>v.play().catch(()=>{}));v.addEventListener("mouseleave",()=>v.pause())});
+$$(".modal").forEach(m=>{$(".modal-close",m)?.addEventListener("click",()=>closeModal(m));m.addEventListener("click",e=>{if(e.target===m)closeModal(m)})});
+addEventListener("keydown",e=>{if(e.key==="Escape"){closeModal(lightbox);closeModal(charModal)}});
 
-seek?.addEventListener('input',()=>{
-if(!audio||!musicAvailable||!Number.isFinite(audio.duration)||audio.duration<=0)return;
-const p=Math.max(0,Math.min(100,Number(seek.value)));
-audio.currentTime=p/100*audio.duration;
-setProgress(seek,p);
-if(time)time.textContent=fmt(audio.currentTime);
-});
+const openCharacterModal=({name="Ruby Hoshino",sub="",media="",type="image"}={})=>{if(!charModal)return;if(charName)charName.textContent=name;if(charSub)charSub.textContent=sub;if(charMedia){charMedia.innerHTML="";if(media){const el=document.createElement(type==="video"?"video":"img");el.src=media;if(type==="video"){el.controls=true;el.playsInline=true;el.preload="metadata"}else el.alt=name;el.onerror=()=>{charMedia.innerHTML='<div class="media-fallback">Character media could not be loaded.</div>'};charMedia.appendChild(el)}}openModal(charModal)};
+$$("[data-character-name]").forEach(e=>e.addEventListener("click",()=>openCharacterModal({name:e.dataset.characterName||"Ruby Hoshino",sub:e.dataset.characterSub||"",media:e.dataset.characterMedia||"",type:e.dataset.characterType||"image"})));
 
-seek?.addEventListener('change',()=>{
-if(audio&&musicAvailable&&Number.isFinite(audio.duration)&&audio.duration>0){
-audio.currentTime=Math.max(0,Math.min(100,Number(seek.value)))/100*audio.duration;
-syncSeek();
-}
-});
+const updateCount=()=>messageBox&&charCount&&(charCount.textContent=`${messageBox.value.length} / ${messageBox.maxLength||500}`);
+messageBox?.addEventListener("input",updateCount);updateCount();
+sendMessage?.addEventListener("click",()=>{if(!messageBox)return;const msg=messageBox.value.trim();if(!msg){if(messageStatus)messageStatus.textContent="Write a little something for Ruby first ✦";messageBox.focus();return}try{const old=JSON.parse(localStorage.getItem("rubyBirthdayMessages")||"[]"),arr=Array.isArray(old)?old:[];arr.push({message:msg,createdAt:new Date().toISOString()});localStorage.setItem("rubyBirthdayMessages",JSON.stringify(arr.slice(-25)));messageBox.value="";updateCount();if(messageStatus)messageStatus.textContent="Your birthday message has been saved ✦"}catch{if(messageStatus)messageStatus.textContent="Your message is ready — browser storage is unavailable."}});
 
-volume?.addEventListener('input',()=>{
-const v=Math.max(0,Math.min(1,Number(volume.value)||0));
-volumeLevel=v;
-if(audio){audio.volume=v;audio.muted=v===0}
-volume.value=String(v);
-setProgress(volume,v*100);
-});
+$$("img,video").forEach(e=>e.setAttribute("draggable","false"));
+const syncHash=()=>{const id=location.hash.replace(/^#/,"");setActive(id&&$(location.hash)?id:"home")};addEventListener("hashchange",syncHash);syncHash();
 
-$('#prevBtn')?.addEventListener('click',()=>{
-if(!audio||!musicAvailable)return;
-audio.currentTime=0;
-syncSeek();
-if(audio.paused)play();
-});
-
-$('#nextBtn')?.addEventListener('click',()=>{
-if(!audio||!musicAvailable)return;
-audio.currentTime=shuffle&&Number.isFinite(audio.duration)?Math.random()*Math.max(0,audio.duration-1):0;
-syncSeek();
-if(audio.paused)play();
-});
-
-shuffleBtn?.addEventListener('click',()=>{
-shuffle=!shuffle;
-shuffleBtn.classList.toggle('active',shuffle);
-shuffleBtn.setAttribute('aria-pressed',String(shuffle));
-});
-
-repeatBtn?.addEventListener('click',()=>{
-repeat=!repeat;
-repeatBtn.classList.toggle('active',repeat);
-repeatBtn.setAttribute('aria-pressed',String(repeat));
-});
-
-$('#likeTrack')?.addEventListener('click',e=>{
-const a=e.currentTarget,b=!a.classList.contains('active');
-a.classList.toggle('active',b);
-a.setAttribute('aria-pressed',String(b));
-});
-
-const characterModal=$('#characterModal'),characterModalMedia=$('#characterModalMedia'),characterModalName=$('#characterModalName'),characterModalSub=$('#characterModalSub'),lightbox=$('#lightbox'),modalMedia=$('#modalMedia'),modalCaption=$('#modalCaption');
-
-const openModal=m=>{
-if(!m)return;
-m.classList.add('open');
-m.setAttribute('aria-hidden','false');
-document.body.classList.add('modal-open');
-m.querySelector('video')?.play().catch(()=>{});
-};
-
-const closeAll=()=>{
-$$('.modal.open').forEach(m=>{
-m.classList.remove('open');
-m.setAttribute('aria-hidden','true');
-$$('video',m).forEach(v=>{v.pause();v.currentTime=0});
-});
-document.body.classList.remove('modal-open');
-};
-
-$$('.character-card').forEach(card=>card.addEventListener('click',()=>{
-const s=card.dataset.image,n=card.dataset.name||'',sub=card.dataset.sub||'';
-setupMedia(characterModalMedia,s,{autoplay:isVideo(s),muted:true,loop:isVideo(s),controls:isVideo(s),alt:n});
-if(characterModalName)characterModalName.textContent=n;
-if(characterModalSub)characterModalSub.textContent=sub;
-openModal(characterModal);
-}));
-
-$$('.gallery-item').forEach(item=>item.addEventListener('click',()=>{
-const s=item.dataset.lightbox,c=item.dataset.caption||'';
-setupMedia(modalMedia,s,{autoplay:isVideo(s),muted:true,loop:isVideo(s),controls:isVideo(s),alt:c});
-if(modalCaption)modalCaption.textContent=c;
-openModal(lightbox);
-}));
-
-$$('.modal-close').forEach(b=>b.addEventListener('click',closeAll));
-$$('.modal').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)closeAll()}));
-document.addEventListener('keydown',e=>{if(e.key==='Escape')closeAll()});
-
-const box=$('#messageBox'),count=$('#charCount'),send=$('#sendMessage'),status=$('#messageStatus');
-
-box?.addEventListener('input',()=>{
-if(count)count.textContent=`${box.value.length} / 500`;
-});
-
-send?.addEventListener('click',()=>{
-if(!box?.value.trim()){
-if(status)status.textContent='Write a little something first ✦';
-return;
-}
-if(status)status.textContent='Message saved for this visit. ✦';
-send.textContent='SENT ✓';
-setTimeout(()=>send.textContent='SEND MESSAGE ✦',1800);
-});
 })();
