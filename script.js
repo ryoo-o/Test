@@ -40,7 +40,7 @@ const seekTo=v=>{if(!audio||!Number.isFinite(audio.duration)||audio.duration<=0)
 
 if(audio){
 setSrc();
-audio.volume=clamp(Number(volume?.value??.85),0,1);
+audio.volume=clamp(Number(volume?.value??.3),0,1);
 audio.addEventListener("loadedmetadata",()=>{hideToast();sync()});
 audio.addEventListener("canplay",hideToast);
 audio.addEventListener("timeupdate",sync);
@@ -64,7 +64,7 @@ like?.addEventListener("click",()=>{like.classList.toggle("active");like.setAttr
 try{const l=localStorage.getItem("rubyBirthdayLikedTrack")==="true";like?.classList.toggle("active",l);like?.setAttribute("aria-pressed",String(l))}catch{}
 seek?.addEventListener("input",()=>seekTo(seek.value));
 volume?.addEventListener("input",()=>{if(audio)audio.volume=clamp(Number(volume.value),0,1);progress(volume,Number(volume.value)*100)});
-progress(seek,seek?.value||0);progress(volume,Number(volume?.value||.85)*100);updatePlay();sync();
+progress(seek,seek?.value||0);progress(volume,Number(volume?.value||.3)*100);updatePlay();sync();
 
 const closeModal=m=>{if(!m)return;m.classList.remove("open");m.setAttribute("aria-hidden","true");$$("video",m).forEach(v=>{try{v.pause();v.removeAttribute("src");v.load()}catch{}});if(![lightbox,charModal].some(x=>x?.classList.contains("open")))body.classList.remove("modal-open")};
 const openModal=m=>{if(!m)return;m.classList.add("open");m.setAttribute("aria-hidden","false");body.classList.add("modal-open")};
@@ -84,4 +84,5 @@ sendMessage?.addEventListener("click",()=>{if(!messageBox)return;const msg=messa
 $$("img,video").forEach(e=>e.setAttribute("draggable","false"));
 const syncHash=()=>{const id=location.hash.replace(/^#/,"");setActive(id&&$(location.hash)?id:"home")};addEventListener("hashchange",syncHash);syncHash();
 
+playMusic();
 })();
