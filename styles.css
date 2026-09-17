@@ -17,8 +17,9 @@ button{-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none;-webki
 .nav{display:flex;align-items:center;gap:30px;height:100%;font:500 12px var(--display);letter-spacing:.04em}
 .nav a,.music-nav{position:relative;color:#f0e8f2;background:none;border:0;cursor:pointer;padding:30px 0 24px;transition:.25s}
 .nav a:hover,.nav a.active,.music-nav:hover{color:var(--pink2);text-shadow:0 0 14px rgba(255,83,183,.55)}
-.nav a.active:after{content:"";position:absolute;bottom:17px;left:50%;width:8px;height:8px;transform:translateX(-50%) rotate(45deg);background:var(--pink);box-shadow:0 0 14px var(--pink)}
-.nav-star{position:absolute;bottom:11px;left:50%;transform:translateX(-50%);opacity:.9;color:var(--pink)}
+.nav a::after{content:"";position:absolute;bottom:14px;left:50%;width:28px;height:2px;transform:translateX(-50%) scaleX(0);transform-origin:center;background:var(--pink);box-shadow:0 0 12px var(--pink);opacity:0;transition:transform .28s ease,opacity .28s ease}
+.nav a:hover::after{opacity:.55;transform:translateX(-50%) scaleX(.55)}
+.nav a.active::after{opacity:1;transform:translateX(-50%) scaleX(1)}
 .menu-toggle{display:none;background:none;border:0;color:white;gap:5px;flex-direction:column;padding:9px}
 .menu-toggle span{display:block;width:24px;height:1px;background:#f3d5e8}
 .hero{min-height:590px;height:min(78vh,760px);position:relative;overflow:hidden;scroll-margin-top:70px}
@@ -37,7 +38,7 @@ button{-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none;-webki
 .quick-links{display:flex;gap:25px;margin-top:32px}
 .diamond{width:48px;height:48px;flex-shrink:0;border:1px solid rgba(255,119,194,.5);background:rgba(16,9,30,.55);transform:rotate(45deg);display:grid;place-items:center;color:#ff8dc7;font-size:19px;cursor:pointer;transition:.28s;text-shadow:0 0 10px rgba(255,102,188,.45)}
 .diamond:hover{transform:rotate(45deg) scale(1.1);background:rgba(255,81,175,.08);box-shadow:0 0 22px rgba(255,80,178,.26)}
-.jp-sign{position:absolute;right:7.7%;top:137px;z-index:5;font:600 clamp(36px,4.4vw,65px)/1.35 var(--serif);letter-spacing:.03em;color:#efe7f1;text-shadow:0 0 10px rgba(255,255,255,.17);writing-mode:horizontal-tb}
+.jp-sign{position:absolute;right:7.7%;top:118px;z-index:5;width:clamp(82px,8vw,120px);height:clamp(230px,31vw,390px);object-fit:contain;object-position:center;filter:drop-shadow(0 0 12px rgba(255,255,255,.16)) drop-shadow(0 0 18px rgba(255,66,176,.18));pointer-events:none}
 .dashboard{position:relative;z-index:6;display:grid;grid-template-columns:1fr 1fr;gap:16px;padding:7px 3vw 25px;margin-top:-8px;background:linear-gradient(to bottom,rgba(4,3,11,.15),rgba(4,3,11,.72) 18%,rgba(4,3,11,1) 90%);scroll-margin-top:70px}
 .panel{position:relative;min-width:0;min-height:300px;border:1px solid var(--line);background:linear-gradient(180deg,rgba(16,10,30,.78),rgba(7,5,17,.86));box-shadow:var(--shadow);overflow:hidden}
 .panel:before,.panel:after{content:"";position:absolute;inset:7px;border:1px solid rgba(225,89,173,.14);pointer-events:none}
@@ -169,7 +170,8 @@ body{min-width:0}
 .nav{position:absolute;top:70px;left:12px;right:12px;display:none;height:auto;padding:10px 18px 16px;flex-direction:column;align-items:stretch;gap:0;background:rgba(8,5,17,.97);border:1px solid rgba(255,108,188,.22);box-shadow:0 15px 30px rgba(0,0,0,.35)}
 .nav.open{display:flex}
 .nav a,.music-nav{padding:13px 4px;text-align:center}
-.nav a.active:after,.nav-star{display:none}
+.nav a::after{bottom:5px;width:30px}
+.nav a.active::after{display:block}
 .hero{height:660px}
 .hero-video{object-position:60% center}
 .hero-vignette{background:linear-gradient(90deg,rgba(5,3,13,.84),rgba(5,3,13,.44) 62%,rgba(5,3,13,.25)),linear-gradient(0deg,rgba(5,3,13,.75),transparent 45%)}
@@ -178,7 +180,7 @@ body{min-width:0}
 .eyebrow{margin-left:3px}
 .hero h1{font-size:102px}
 .hero-note{max-width:460px}
-.jp-sign{top:156px;right:22px;font-size:36px}
+.jp-sign{top:138px;right:14px;width:74px;height:220px}
 .quick-links{gap:18px}
 .diamond{width:43px;height:43px}
 .dashboard{grid-template-columns:1fr;padding:9px 14px 20px}
