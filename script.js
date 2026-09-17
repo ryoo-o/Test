@@ -24,7 +24,15 @@ if(glow&&!reduced()){let raf=0,x=innerWidth/2,y=innerHeight/2;addEventListener("
 
 const links=$$(".nav a[href^='#']"),sections=links.map(a=>$(a.getAttribute("href"))).filter(Boolean);
 const setActive=id=>links.forEach(a=>a.classList.toggle("active",a.getAttribute("href")===`#${id}`));
-if("IntersectionObserver"in window) new IntersectionObserver(es=>{const v=es.filter(e=>e.isIntersecting).sort((a,b)=>b.intersectionRatio-a.intersectionRatio)[0];if(v?.target.id)setActive(v.target.id)},{rootMargin:"-25% 0px -55% 0px",threshold:[0,.15,.35,.6]}).observe(...sections);
+
+if("IntersectionObserver"in window){
+const sectionObserver=new IntersectionObserver(es=>{
+const v=es.filter(e=>e.isIntersecting).sort((a,b)=>b.intersectionRatio-a.intersectionRatio)[0];
+if(v?.target.id)setActive(v.target.id)
+},{rootMargin:"-25% 0px -55% 0px",threshold:[0,.15,.35,.6]});
+sections.forEach(s=>sectionObserver.observe(s));
+}
+
 $$(".nav a,.quick-links a,.brand").forEach(a=>a.addEventListener("click",e=>{const id=a.getAttribute("href");if(!id?.startsWith("#"))return;const t=$(id);if(!t)return;e.preventDefault();t.scrollIntoView({behavior:reduced()?"auto":"smooth",block:"start"});history.replaceState?.(null,"",id)}));
 
 let shuffleOn=false,repeatOn=false;
@@ -34,7 +42,44 @@ const hideToast=()=>{if(!toast)return;clearTimeout(showToast.t);toast.classList.
 const updatePlay=()=>{if(!audio||!play)return;const on=!audio.paused&&!audio.ended;panel?.classList.toggle("is-playing",on);play.textContent=on?"❚❚":"▶";play.setAttribute("aria-label",on?"Pause music":"Play music")};
 const sync=()=>{if(!audio)return;const d=Number.isFinite(audio.duration)?audio.duration:0,c=Number.isFinite(audio.currentTime)?audio.currentTime:0;if(current)current.textContent=fmt(c);if(duration)duration.textContent=fmt(d);if(seek){const p=d?c/d*100:0;seek.value=String(p);progress(seek,p)}if(volume)progress(volume,Number(volume.value)*100)};
 const setSrc=()=>{if(audio&&audio.getAttribute("src")!==SRC){audio.src=SRC;audio.load()}};
-const playMusic=async()=>{if(!audio)return;setSrc();try{await audio.play();hideToast();updatePlay();sync()}catch{if(audio.error){showToast("Place your music file at <b>assets/music.mp3</b> to activate the player.",true)}}};
+
+const playMusic=async()=>{
+if(!audio)return;
+setSrc();
+try{
+audio.muted=false;
+await audio.play();
+hideToast();
+updatePlay();
+sync()
+}catch{
+if(audio.error)showToast("Place your music file at <b>assets/music.mp3</b> to activate the player.",true)
+}
+};
+
+const startAutoplay=async()=>{
+if(!audio)return;
+setSrc();
+audio.muted=true;
+try{
+await audio.play();
+hideToast();
+updatePlay();
+sync()
+}catch{}
+};
+
+const unlockAutoplay=async()=>{
+if(!audio)return;
+audio.muted=false;
+try{
+if(audio.paused)await audio.play();
+hideToast();
+updatePlay();
+sync()
+}catch{}
+};
+
 const toggleMusic=()=>audio&&(audio.paused||audio.ended?playMusic():(audio.pause(),updatePlay()));
 const seekTo=v=>{if(!audio||!Number.isFinite(audio.duration)||audio.duration<=0)return;audio.currentTime=audio.duration*clamp(Number(v)||0,0,100)/100;sync()};
 
@@ -64,7 +109,13 @@ like?.addEventListener("click",()=>{like.classList.toggle("active");like.setAttr
 try{const l=localStorage.getItem("rubyBirthdayLikedTrack")==="true";like?.classList.toggle("active",l);like?.setAttribute("aria-pressed",String(l))}catch{}
 seek?.addEventListener("input",()=>seekTo(seek.value));
 volume?.addEventListener("input",()=>{if(audio)audio.volume=clamp(Number(volume.value),0,1);progress(volume,Number(volume.value)*100)});
-progress(seek,seek?.value||0);progress(volume,Number(volume?.value||.3)*100);updatePlay();sync();
+progress(seek,seek?.value||0);
+progress(volume,Number(volume?.value||.3)*100);
+updatePlay();
+sync();
+
+["pointerdown","touchstart","keydown"].forEach(type=>document.addEventListener(type,unlockAutoplay,{once:true,passive:true}));
+startAutoplay();
 
 const closeModal=m=>{if(!m)return;m.classList.remove("open");m.setAttribute("aria-hidden","true");$$("video",m).forEach(v=>{try{v.pause();v.removeAttribute("src");v.load()}catch{}});if(![lightbox,charModal].some(x=>x?.classList.contains("open")))body.classList.remove("modal-open")};
 const openModal=m=>{if(!m)return;m.classList.add("open");m.setAttribute("aria-hidden","false");body.classList.add("modal-open")};
@@ -78,11 +129,28 @@ const openCharacterModal=({name="Ruby Hoshino",sub="",media="",type="image"}={})
 $$("[data-character-name]").forEach(e=>e.addEventListener("click",()=>openCharacterModal({name:e.dataset.characterName||"Ruby Hoshino",sub:e.dataset.characterSub||"",media:e.dataset.characterMedia||"",type:e.dataset.characterType||"image"})));
 
 const updateCount=()=>messageBox&&charCount&&(charCount.textContent=`${messageBox.value.length} / ${messageBox.maxLength||500}`);
-messageBox?.addEventListener("input",updateCount);updateCount();
-sendMessage?.addEventListener("click",()=>{if(!messageBox)return;const msg=messageBox.value.trim();if(!msg){if(messageStatus)messageStatus.textContent="Write a little something for Ruby first ✦";messageBox.focus();return}try{const old=JSON.parse(localStorage.getItem("rubyBirthdayMessages")||"[]"),arr=Array.isArray(old)?old:[];arr.push({message:msg,createdAt:new Date().toISOString()});localStorage.setItem("rubyBirthdayMessages",JSON.stringify(arr.slice(-25)));messageBox.value="";updateCount();if(messageStatus)messageStatus.textContent="Your birthday message has been saved ✦"}catch{if(messageStatus)messageStatus.textContent="Your message is ready — browser storage is unavailable."}});
+messageBox?.addEventListener("input",updateCount);
+updateCount();
+
+sendMessage?.addEventListener("click",()=>{
+if(!messageBox)return;
+const msg=messageBox.value.trim();
+if(!msg){if(messageStatus)messageStatus.textContent="Write a little something for Ruby first ✦";messageBox.focus();return}
+try{
+const old=JSON.parse(localStorage.getItem("rubyBirthdayMessages")||"[]"),arr=Array.isArray(old)?old:[];
+arr.push({message:msg,createdAt:new Date().toISOString()});
+localStorage.setItem("rubyBirthdayMessages",JSON.stringify(arr.slice(-25)));
+messageBox.value="";
+updateCount();
+if(messageStatus)messageStatus.textContent="Your birthday message has been saved ✦"
+}catch{
+if(messageStatus)messageStatus.textContent="Your message is ready — browser storage is unavailable."
+}
+});
 
 $$("img,video").forEach(e=>e.setAttribute("draggable","false"));
-const syncHash=()=>{const id=location.hash.replace(/^#/,"");setActive(id&&$(location.hash)?id:"home")};addEventListener("hashchange",syncHash);syncHash();
+const syncHash=()=>{const id=location.hash.replace(/^#/,"");setActive(id&&$(location.hash)?id:"home")};
+addEventListener("hashchange",syncHash);
+syncHash();
 
-playMusic();
 })();
