@@ -17,11 +17,13 @@
 
   <header class="site-header">
     <a class="brand" href="#home" aria-label="Ruby home"><span>Ruby</span>✦</a>
-    <button class="menu-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="mainNav">
+
+    <button class="menu-toggle" id="menuToggle" aria-label="Open menu" aria-expanded="false" aria-controls="mainNav">
       <span></span><span></span><span></span>
     </button>
+
     <nav class="nav" id="mainNav" aria-label="Primary">
-      <a href="#home" class="active">HOME <span class="nav-star">✦</span></a>
+      <a href="#home" class="active">HOME</a>
       <a href="#about">ABOUT</a>
       <a href="#gallery">GALLERY</a>
       <a href="#message">MESSAGE</a>
@@ -36,17 +38,23 @@
           <source src="assets/hero.mp4" type="video/mp4">
         </video>
       </div>
+
       <div class="hero-vignette"></div>
+
       <div class="hero-content">
         <div class="hero-copy">
           <p class="eyebrow">HAPPY BIRTHDAY</p>
+
           <h1>Ruby<span class="sparkle">✧</span></h1>
+
           <p class="script">Shine like the star you were born to be. <span>☆</span></p>
+
           <p class="hero-note">
             To the brightest star in our lives.<br>
             May your year be filled with love, happiness,<br class="desktop-only">
             and all the things that make you smile.
           </p>
+
           <div class="quick-links">
             <a href="#message" class="diamond" aria-label="Send a message">☆</a>
             <a href="#about" class="diamond" aria-label="About Ruby">♡</a>
@@ -55,21 +63,25 @@
           </div>
         </div>
       </div>
-      <div class="jp-sign" aria-label="Japanese phrase">推<br>し<br>の<br>子</div>
+
+      <img class="jp-sign" src="assets/name.png" alt="Ruby name artwork">
     </section>
 
     <section class="dashboard section-anchor" id="about">
       <div class="panel about-panel">
         <div class="panel-title">✦ &nbsp;ABOUT RUBY&nbsp; ✦</div>
+
         <div class="about-grid">
           <div class="portrait-wrap">
             <img src="https://cdn.discordapp.com/avatars/1378992137105838175/6e0fdad46f35cf1b37b19c2997560d92.jpg?size=1024" alt="Ruby" loading="eager">
           </div>
+
           <div class="about-copy">
             <p>A kind soul with a heart of gold.<br>You light up every room<br>just like <span>Ruby Hoshino!</span></p>
             <p>You’re talented, adorable,<br>and absolutely amazing<br>just the way you are.</p>
           </div>
         </div>
+
         <div class="signature">Ruby</div>
         <div class="heart-float" aria-hidden="true">♥</div>
       </div>
@@ -152,11 +164,14 @@
 
       <div class="message-card">
         <p class="message-kicker">TO RUBY, WITH LOVE</p>
+
         <textarea id="messageBox" maxlength="500" placeholder="Write a little birthday message here..." aria-label="Birthday message"></textarea>
+
         <div class="message-actions">
           <span id="charCount">0 / 500</span>
           <button id="sendMessage">SEND MESSAGE ✦</button>
         </div>
+
         <p id="messageStatus" class="status" role="status"></p>
       </div>
     </section>
@@ -182,7 +197,7 @@
     </div>
   </footer>
 
-  <audio id="audio" preload="metadata"></audio>
+  <audio id="audio" preload="metadata" autoplay muted></audio>
 
   <div id="musicToast" class="music-toast" role="status" aria-live="polite">
     Place your music file at <b>assets/music.mp3</b> to activate the player.
@@ -196,8 +211,10 @@
 
   <div class="modal" id="characterModal" aria-hidden="true">
     <button class="modal-close" aria-label="Close">×</button>
+
     <div class="character-modal-card">
       <div class="character-modal-media" id="characterModalMedia"></div>
+
       <div>
         <h3 id="characterModalName"></h3>
         <p id="characterModalSub"></p>
