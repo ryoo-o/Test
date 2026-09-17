@@ -4,6 +4,7 @@ const $=(s,e=document)=>e.querySelector(s),$$=(s,e=document)=>[...e.querySelecto
 const body=document.body,audio=$("#audio"),panel=$("#playerPanel"),play=$("#playBtn"),seek=$("#seek"),volume=$("#volume");
 const current=$("#currentTime"),duration=$("#duration"),shuffle=$("#shuffleBtn"),repeat=$("#repeatBtn"),prev=$("#prevBtn"),next=$("#nextBtn");
 const like=$("#likeTrack"),musicNav=$("#musicNav"),quickMusic=$("#quickMusic"),toast=$("#musicToast");
+const musicPrompt=$("#musicPrompt"),promptPlay=$("#musicPromptPlay"),promptLater=$("#musicPromptLater");
 const menu=$("#menuToggle")||$(".menu-toggle"),nav=$("#mainNav"),glow=$(".cursor-glow");
 const lightbox=$("#lightbox"),modalMedia=$("#modalMedia"),modalCaption=$("#modalCaption"),charModal=$("#characterModal");
 const charMedia=$("#characterModalMedia"),charName=$("#characterModalName"),charSub=$("#characterModalSub");
@@ -57,29 +58,6 @@ if(audio.error)showToast("Place your music file at <b>assets/music.mp3</b> to ac
 }
 };
 
-const startAutoplay=async()=>{
-if(!audio)return;
-setSrc();
-audio.muted=true;
-try{
-await audio.play();
-hideToast();
-updatePlay();
-sync()
-}catch{}
-};
-
-const unlockAutoplay=async()=>{
-if(!audio)return;
-audio.muted=false;
-try{
-if(audio.paused)await audio.play();
-hideToast();
-updatePlay();
-sync()
-}catch{}
-};
-
 const toggleMusic=()=>audio&&(audio.paused||audio.ended?playMusic():(audio.pause(),updatePlay()));
 const seekTo=v=>{if(!audio||!Number.isFinite(audio.duration)||audio.duration<=0)return;audio.currentTime=audio.duration*clamp(Number(v)||0,0,100)/100;sync()};
 
@@ -114,8 +92,14 @@ progress(volume,Number(volume?.value||.3)*100);
 updatePlay();
 sync();
 
-["pointerdown","touchstart","keydown"].forEach(type=>document.addEventListener(type,unlockAutoplay,{once:true,passive:true}));
-startAutoplay();
+const closeMusicPrompt=()=>{if(!musicPrompt)return;musicPrompt.classList.remove("open");musicPrompt.setAttribute("aria-hidden","true");body.classList.remove("music-prompt-open")};
+const openMusicPrompt=()=>{if(!musicPrompt)return;musicPrompt.classList.add("open");musicPrompt.setAttribute("aria-hidden","false");body.classList.add("music-prompt-open")};
+
+promptPlay?.addEventListener("click",()=>{closeMusicPrompt();playMusic()});
+promptLater?.addEventListener("click",closeMusicPrompt);
+musicPrompt?.addEventListener("click",e=>{if(e.target===musicPrompt)closeMusicPrompt()});
+addEventListener("keydown",e=>{if(e.key==="Escape"&&musicPrompt?.classList.contains("open"))closeMusicPrompt()});
+setTimeout(openMusicPrompt,500);
 
 const closeModal=m=>{if(!m)return;m.classList.remove("open");m.setAttribute("aria-hidden","true");$$("video",m).forEach(v=>{try{v.pause();v.removeAttribute("src");v.load()}catch{}});if(![lightbox,charModal].some(x=>x?.classList.contains("open")))body.classList.remove("modal-open")};
 const openModal=m=>{if(!m)return;m.classList.add("open");m.setAttribute("aria-hidden","false");body.classList.add("modal-open")};
@@ -125,7 +109,7 @@ $$(".gallery-item video").forEach(v=>{v.muted=true;v.addEventListener("mouseente
 $$(".modal").forEach(m=>{$(".modal-close",m)?.addEventListener("click",()=>closeModal(m));m.addEventListener("click",e=>{if(e.target===m)closeModal(m)})});
 addEventListener("keydown",e=>{if(e.key==="Escape"){closeModal(lightbox);closeModal(charModal)}});
 
-const openCharacterModal=({name="Ruby Hoshino",sub="",media="",type="image"}={})=>{if(!charModal)return;if(charName)charName.textContent=name;if(charSub)charSub.textContent=sub;if(charMedia){charMedia.innerHTML="";if(media){const el=document.createElement(type==="video"?"video":"img");el.src=media;if(type==="video"){el.controls=true;el.playsInline=true;el.preload="metadata"}else el.alt=name;el.onerror=()=>{charMedia.innerHTML='<div class="media-fallback">Character media could not be loaded.</div>'};charMedia.appendChild(el)}}openModal(charModal)};
+const openCharacterModal=({name="Ruby Hoshino",sub="",media="",type="image"}={})=>{if(!charModal)return;if(charName)charName.textContent=name;if(charSub)charSub.textContent=sub;if(charMedia){charMedia.innerHTML="";if(media){const el=document.createElement(type==="video"?"video":"img");el.src=media;if(type==="video"){el.controls=true;el.playsInline=true;el.preload="metadata"}else el.alt=name;el.onerror=()=>{charMedia.innerHTML='<div class="media-fallback">Character media could not be loaded.</div>';};charMedia.appendChild(el)}}openModal(charModal)};
 $$("[data-character-name]").forEach(e=>e.addEventListener("click",()=>openCharacterModal({name:e.dataset.characterName||"Ruby Hoshino",sub:e.dataset.characterSub||"",media:e.dataset.characterMedia||"",type:e.dataset.characterType||"image"})));
 
 const updateCount=()=>messageBox&&charCount&&(charCount.textContent=`${messageBox.value.length} / ${messageBox.maxLength||500}`);
