@@ -197,10 +197,23 @@
     </div>
   </footer>
 
-  <audio id="audio" preload="metadata" autoplay muted></audio>
+  <audio id="audio" preload="metadata"></audio>
 
   <div id="musicToast" class="music-toast" role="status" aria-live="polite">
     Place your music file at <b>assets/music.mp3</b> to activate the player.
+  </div>
+
+  <div class="music-prompt" id="musicPrompt" aria-hidden="true">
+    <div class="music-prompt-card" role="dialog" aria-modal="true" aria-labelledby="musicPromptTitle">
+      <div class="music-prompt-star">✦</div>
+      <h2 id="musicPromptTitle">Hey, sis! ♡</h2>
+      <p>Would you like to play the<br><span>Oshi no Ko “IDOL”</span> song?</p>
+
+      <div class="music-prompt-actions">
+        <button id="musicPromptPlay">PLAY IDOL ♫</button>
+        <button id="musicPromptLater">MAYBE LATER</button>
+      </div>
+    </div>
   </div>
 
   <div class="modal" id="lightbox" aria-hidden="true">
