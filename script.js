@@ -72,8 +72,8 @@ audio.addEventListener("volumechange",sync);
 audio.addEventListener("play",updatePlay);
 audio.addEventListener("pause",updatePlay);
 audio.addEventListener("ended",()=>{updatePlay();if(repeatOn){audio.currentTime=0;playMusic()}});
-audio.addEventListener("error",()=>{updatePlay();showToast("Place your music file at <b>assets/music.mp3</b> to activate the player.",true)});
-setTimeout(()=>{if(audio.error)showToast("Place your music file at <b>assets/music.mp3</b> to activate the player.",true)},1400)
+audio.addEventListener("error",()=>{updatePlay();if(!musicPrompt?.classList.contains("open"))showToast("Place your music file at <b>assets/music.mp3</b> to activate the player.",true)});
+setTimeout(()=>{if(audio.error&&!musicPrompt?.classList.contains("open"))showToast("Place your music file at <b>assets/music.mp3</b> to activate the player.",true)},1400)
 }
 
 play?.addEventListener("click",toggleMusic);
@@ -93,7 +93,7 @@ updatePlay();
 sync();
 
 const closeMusicPrompt=()=>{if(!musicPrompt)return;musicPrompt.classList.remove("open");musicPrompt.setAttribute("aria-hidden","true");body.classList.remove("music-prompt-open")};
-const openMusicPrompt=()=>{if(!musicPrompt)return;musicPrompt.classList.add("open");musicPrompt.setAttribute("aria-hidden","false");body.classList.add("music-prompt-open")};
+const openMusicPrompt=()=>{if(!musicPrompt)return;hideToast();musicPrompt.classList.add("open");musicPrompt.setAttribute("aria-hidden","false");body.classList.add("music-prompt-open")};
 
 promptPlay?.addEventListener("click",()=>{closeMusicPrompt();playMusic()});
 promptLater?.addEventListener("click",closeMusicPrompt);
@@ -103,7 +103,7 @@ setTimeout(openMusicPrompt,500);
 
 const closeModal=m=>{if(!m)return;m.classList.remove("open");m.setAttribute("aria-hidden","true");$$("video",m).forEach(v=>{try{v.pause();v.removeAttribute("src");v.load()}catch{}});if(![lightbox,charModal].some(x=>x?.classList.contains("open")))body.classList.remove("modal-open")};
 const openModal=m=>{if(!m)return;m.classList.add("open");m.setAttribute("aria-hidden","false");body.classList.add("modal-open")};
-const openLightbox=(src,caption="")=>{if(!lightbox||!modalMedia)return;modalMedia.innerHTML="";if(modalCaption)modalCaption.textContent=caption;const video=/\.(mp4|webm|ogg)(\?.*)?$/i.test(src);if(video){const v=document.createElement("video");v.src=src;v.controls=v.autoplay=true;v.loop=true;v.playsInline=true;v.preload="metadata";v.setAttribute("aria-label",caption||"Gallery video");v.onerror=()=>{modalMedia.innerHTML='<div class="media-fallback">This media could not be loaded.</div>'};modalMedia.appendChild(v);openModal(lightbox);v.play().catch(()=>{})}else{const img=document.createElement("img");img.src=src;img.alt=caption||"Gallery image";img.onerror=()=>{modalMedia.innerHTML='<div class="media-fallback">This image could not be loaded.</div>'};modalMedia.appendChild(img);openModal(lightbox)}};
+const openLightbox=(src,caption="")=>{if(!lightbox||!modalMedia)return;modalMedia.innerHTML="";if(modalCaption)modalCaption.textContent=caption;const video=/\.(mp4|webm|ogg)(\?.*)?$/i.test(src);if(video){const v=document.createElement("video");v.src=src;v.controls=v.autoplay=true;v.loop=true;v.playsInline=true;v.preload="metadata";v.setAttribute("aria-label",caption||"Gallery video");v.onerror=()=>{modalMedia.innerHTML='<div class="media-fallback">This media could not be loaded.</div>'};modalMedia.appendChild(v);openModal(lightbox);v.play().catch(()=>{})}else{const img=document.createElement("img");img.src=src;img.alt=caption||"Gallery image";img.onerror=()=>{modalMedia.innerHTML='<div class="media-fallback">This image could not be loaded.</div>';};modalMedia.appendChild(img);openModal(lightbox)}};
 $$(".gallery-item[data-lightbox]").forEach(i=>i.addEventListener("click",()=>openLightbox(i.dataset.lightbox,i.dataset.caption||"")));
 $$(".gallery-item video").forEach(v=>{v.muted=true;v.addEventListener("mouseenter",()=>v.play().catch(()=>{}));v.addEventListener("mouseleave",()=>v.pause())});
 $$(".modal").forEach(m=>{$(".modal-close",m)?.addEventListener("click",()=>closeModal(m));m.addEventListener("click",e=>{if(e.target===m)closeModal(m)})});
