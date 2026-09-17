@@ -29,7 +29,7 @@ button{-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none;-webki
 .hero-content{position:relative;z-index:5;max-width:1536px;height:100%;margin:auto;padding:122px 10.7vw 50px;display:flex;align-items:flex-start}
 .hero-copy{max-width:570px}
 .eyebrow{margin:0 0 0 28px;font:500 clamp(18px,2.1vw,30px) var(--display);letter-spacing:.24em}
-.hero h1{margin:3px 0 0;font:500 clamp(100px,11vw,190px)/.8 var(--display);letter-spacing:-.045em;background:linear-gradient(120deg,#fff8ff 0,#ffb0dc 34%,#ff5daf 73%,#fff1fa);-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:0 0 20px rgba(255,62,170,.3)}
+.hero h1{margin:3px 0 0;font:500 clamp(100px,11vw,190px)/1 var(--display);letter-spacing:-.045em;background:linear-gradient(120deg,#fff8ff 0,#ffb0dc 34%,#ff5daf 73%,#fff1fa);-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:0 0 20px rgba(255,62,170,.3);padding-bottom:.08em;overflow:visible}
 .sparkle{font-size:.26em;vertical-align:top;margin-left:.1em;color:#ffd5eb;filter:drop-shadow(0 0 7px #ff7cba)}
 .script{margin:24px 0 16px;font:400 clamp(25px,2.4vw,38px)/1.05 var(--script);color:#ff95c9;text-shadow:0 0 10px rgba(255,101,187,.35)}
 .script span{font-family:var(--serif);font-size:.75em}
