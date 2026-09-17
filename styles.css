@@ -135,19 +135,19 @@ footer{position:relative;z-index:5;padding:28px 3vw 24px;background:#080613;bord
 .music-toast{position:fixed;z-index:100;right:20px;bottom:calc(20px + env(safe-area-inset-bottom,0px));max-width:350px;padding:12px 15px;background:rgba(20,11,30,.97);border:1px solid rgba(255,111,190,.4);box-shadow:0 8px 25px rgba(0,0,0,.4);color:#d8c5d6;font-size:12px;border-radius:8px;opacity:0;visibility:hidden;transform:translateY(15px);pointer-events:none;transition:.25s}
 .music-toast.show{opacity:1;visibility:visible;transform:translateY(0)}
 
-.music-prompt{position:fixed;inset:0;z-index:110;display:grid;place-items:center;padding:20px;background:rgba(2,1,9,.82);backdrop-filter:blur(10px);opacity:0;visibility:hidden;pointer-events:none;transition:.25s}
+.music-prompt{position:fixed!important;inset:0!important;top:0!important;right:0!important;bottom:0!important;left:0!important;z-index:9999!important;width:100vw!important;height:100vh!important;display:flex!important;align-items:center!important;justify-content:center!important;padding:20px;background:rgba(2,1,9,.86);backdrop-filter:blur(12px);opacity:0;visibility:hidden;pointer-events:none;transition:opacity .25s ease,visibility .25s ease}
 .music-prompt.open{opacity:1;visibility:visible;pointer-events:auto}
-.music-prompt-card{position:relative;width:min(430px,92vw);padding:34px 28px 28px;text-align:center;border:1px solid rgba(255,110,188,.42);background:linear-gradient(180deg,rgba(20,11,34,.98),rgba(8,5,18,.98));box-shadow:0 0 45px rgba(255,69,170,.2),inset 0 0 35px rgba(255,87,176,.035);transform:translateY(12px) scale(.97);transition:.3s}
+.music-prompt-card{position:relative;width:min(430px,92vw);padding:36px 28px 30px;text-align:center;border:1px solid rgba(255,110,188,.5);background:linear-gradient(180deg,rgba(24,13,39,.99),rgba(8,5,18,.99));box-shadow:0 0 60px rgba(255,69,170,.28),0 20px 70px rgba(0,0,0,.55),inset 0 0 40px rgba(255,87,176,.04);transform:translateY(18px) scale(.96);transition:transform .3s ease}
 .music-prompt.open .music-prompt-card{transform:translateY(0) scale(1)}
-.music-prompt-card:before,.music-prompt-card:after{content:"";position:absolute;inset:7px;border:1px solid rgba(255,105,183,.11);pointer-events:none}
-.music-prompt-star{position:relative;z-index:1;color:#ff8ec5;font-size:22px;text-shadow:0 0 15px rgba(255,87,179,.7);margin-bottom:8px}
-.music-prompt-card h2{position:relative;z-index:1;margin:0;color:#ffe5f3;font:500 30px var(--display)}
-.music-prompt-card p{position:relative;z-index:1;margin:12px 0 24px;color:#cdb9cb;font:400 14px/1.7 var(--sans)}
-.music-prompt-card p span{color:#ff91c7;font-family:var(--display);font-size:17px}
+.music-prompt-card:before,.music-prompt-card:after{content:"";position:absolute;inset:7px;border:1px solid rgba(255,105,183,.12);pointer-events:none}
+.music-prompt-star{position:relative;z-index:1;color:#ff8ec5;font-size:24px;text-shadow:0 0 18px rgba(255,87,179,.75);margin-bottom:8px}
+.music-prompt-card h2{position:relative;z-index:1;margin:0;color:#ffe5f3;font:500 31px var(--display)}
+.music-prompt-card p{position:relative;z-index:1;margin:12px 0 25px;color:#cdb9cb;font:400 14px/1.7 var(--sans)}
+.music-prompt-card p span{color:#ff91c7;font-family:var(--display);font-size:18px}
 .music-prompt-actions{position:relative;z-index:1;display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
-.music-prompt-actions button{padding:11px 17px;border:1px solid rgba(255,112,190,.42);cursor:pointer;font-size:11px;letter-spacing:.05em;transition:.22s}
-#musicPromptPlay{color:#35132b;background:linear-gradient(145deg,#ffb4da,#f05ca8);box-shadow:0 0 20px rgba(255,73,170,.22)}
-#musicPromptPlay:hover{transform:translateY(-2px);box-shadow:0 0 25px rgba(255,73,170,.35)}
+.music-prompt-actions button{min-width:140px;padding:12px 17px;border:1px solid rgba(255,112,190,.45);cursor:pointer;font-size:11px;letter-spacing:.06em;transition:.22s}
+#musicPromptPlay{color:#35132b;background:linear-gradient(145deg,#ffb4da,#f05ca8);box-shadow:0 0 22px rgba(255,73,170,.25)}
+#musicPromptPlay:hover{transform:translateY(-2px);box-shadow:0 0 28px rgba(255,73,170,.4)}
 #musicPromptLater{color:#d6c5d4;background:rgba(255,255,255,.025)}
 #musicPromptLater:hover{color:#ff9bca;background:rgba(255,83,177,.07)}
 
@@ -225,12 +225,12 @@ body{min-width:0}
 .character-modal-card div{padding:28px}
 .footer-quote{font-size:16px}
 .music-toast{left:16px;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));max-width:none;text-align:center}
-.music-prompt{padding:16px}
-.music-prompt-card{width:min(390px,94vw);padding:30px 20px 24px}
-.music-prompt-card h2{font-size:27px}
+.music-prompt{padding:16px!important}
+.music-prompt-card{width:min(390px,94vw);padding:30px 20px 25px}
+.music-prompt-card h2{font-size:28px}
 .music-prompt-card p{font-size:13px;margin-bottom:20px}
 .music-prompt-actions{gap:8px}
-.music-prompt-actions button{flex:1;min-width:125px;padding:11px 10px}
+.music-prompt-actions button{flex:1;min-width:0;padding:11px 9px}
 }
 
 @media(prefers-reduced-motion:reduce){
