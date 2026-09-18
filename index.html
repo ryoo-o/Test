@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#060511">
+<title>For Ruby ✦</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@400;500;600&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;overflow:hidden}
+body{display:grid;place-items:center;background:radial-gradient(circle at 50% 35%,#24112f 0,#0b0717 42%,#030208 100%);color:#f8eefa;font-family:Poppins,sans-serif}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;background-image:radial-gradient(circle,rgba(255,151,220,.8) 0 1px,transparent 1.5px),radial-gradient(circle,rgba(255,255,255,.5) 0 1px,transparent 1.5px);background-size:170px 170px,250px 250px;background-position:20px 20px,110px 80px;animation:stars 18s linear infinite;opacity:.65}
+@keyframes stars{to{background-position:190px 180px,10px -100px}}
+.card{position:relative;width:min(520px,90vw);padding:55px 30px;text-align:center;border:1px solid rgba(255,105,183,.4);background:rgba(9,5,20,.72);box-shadow:0 0 70px rgba(255,65,170,.16);backdrop-filter:blur(10px)}
+.card:before{content:"";position:absolute;inset:8px;border:1px solid rgba(255,155,215,.1);pointer-events:none}
+.star{font-size:28px;color:#ff8fc8;text-shadow:0 0 18px #ff62b4;animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{50%{transform:scale(1.15);text-shadow:0 0 30px #ff62b4}}
+.kicker{margin:14px 0 5px;font:500 12px var(--display);letter-spacing:.28em;color:#d9bfd5}
+h1{margin:0;font:400 clamp(55px,14vw,85px)/1 var(--script);color:#ffacd8;text-shadow:0 0 20px rgba(255,89,178,.4)}
+p{margin:14px 0 30px;color:#bfaebe;font-size:13px;line-height:1.7}
+.enter{display:inline-flex;align-items:center;justify-content:center;min-width:190px;padding:13px 24px;border:1px solid rgba(255,117,191,.55);background:linear-gradient(145deg,#ffb4da,#ef5aa7);color:#351329;text-decoration:none;font:500 11px var(--display);letter-spacing:.12em;box-shadow:0 0 25px rgba(255,75,174,.22);transition:.25s}
+.enter:hover{transform:translateY(-3px);box-shadow:0 0 35px rgba(255,75,174,.4)}
+@media(max-width:500px){.card{padding:45px 22px}.enter{width:100%}}
+</style>
+</head>
+<body>
+<main class="card">
+<div class="star">✦</div>
+<div class="kicker">A LITTLE SOMETHING FOR</div>
+<h1>Ruby</h1>
+<p>There's something waiting for you.<br>Ready to see it? ♡</p>
+<a class="enter" href="birthday.html">OPEN YOUR SURPRISE ✦</a>
+</main>
+</body>
+</html>
