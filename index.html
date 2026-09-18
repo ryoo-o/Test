@@ -1,38 +1,75 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#060511">
+<meta name="theme-color" content="#070511">
 <title>For Ruby ✦</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@400;500;600&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Great+Vibes&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-*{box-sizing:border-box}
+:root{--pink:#ff79bd;--pink2:#ffc4e3;--ink:#f9edf6;--muted:#c4aec2}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none}
 html,body{margin:0;width:100%;height:100%;overflow:hidden}
-body{display:grid;place-items:center;background:radial-gradient(circle at 50% 35%,#24112f 0,#0b0717 42%,#030208 100%);color:#f8eefa;font-family:Poppins,sans-serif}
-body:before{content:"";position:fixed;inset:0;pointer-events:none;background-image:radial-gradient(circle,rgba(255,151,220,.8) 0 1px,transparent 1.5px),radial-gradient(circle,rgba(255,255,255,.5) 0 1px,transparent 1.5px);background-size:170px 170px,250px 250px;background-position:20px 20px,110px 80px;animation:stars 18s linear infinite;opacity:.65}
-@keyframes stars{to{background-position:190px 180px,10px -100px}}
-.card{position:relative;width:min(520px,90vw);padding:55px 30px;text-align:center;border:1px solid rgba(255,105,183,.4);background:rgba(9,5,20,.72);box-shadow:0 0 70px rgba(255,65,170,.16);backdrop-filter:blur(10px)}
-.card:before{content:"";position:absolute;inset:8px;border:1px solid rgba(255,155,215,.1);pointer-events:none}
-.star{font-size:28px;color:#ff8fc8;text-shadow:0 0 18px #ff62b4;animation:pulse 2s ease-in-out infinite}
-@keyframes pulse{50%{transform:scale(1.15);text-shadow:0 0 30px #ff62b4}}
-.kicker{margin:14px 0 5px;font:500 12px var(--display);letter-spacing:.28em;color:#d9bfd5}
-h1{margin:0;font:400 clamp(55px,14vw,85px)/1 var(--script);color:#ffacd8;text-shadow:0 0 20px rgba(255,89,178,.4)}
-p{margin:14px 0 30px;color:#bfaebe;font-size:13px;line-height:1.7}
-.enter{display:inline-flex;align-items:center;justify-content:center;min-width:190px;padding:13px 24px;border:1px solid rgba(255,117,191,.55);background:linear-gradient(145deg,#ffb4da,#ef5aa7);color:#351329;text-decoration:none;font:500 11px var(--display);letter-spacing:.12em;box-shadow:0 0 25px rgba(255,75,174,.22);transition:.25s}
-.enter:hover{transform:translateY(-3px);box-shadow:0 0 35px rgba(255,75,174,.4)}
-@media(max-width:500px){.card{padding:45px 22px}.enter{width:100%}}
+body{font-family:Poppins,sans-serif;color:var(--ink);background:#05040d}
+.scene{position:fixed;inset:0;overflow:hidden;background:radial-gradient(circle at 72% 25%,rgba(255,125,194,.16),transparent 18%),radial-gradient(circle at 50% 80%,rgba(105,65,153,.2),transparent 35%),linear-gradient(180deg,#080817 0%,#0c0920 48%,#05040d 100%)}
+.moon{position:absolute;width:clamp(130px,17vw,230px);height:clamp(130px,17vw,230px);right:12%;top:10%;border-radius:50%;background:radial-gradient(circle at 38% 35%,#fff9fc,#ffdff0 52%,#e9b7d2 100%);box-shadow:0 0 35px rgba(255,194,226,.4),0 0 100px rgba(255,95,177,.15)}
+.moon:after{content:"";position:absolute;inset:12%;border-radius:50%;background:radial-gradient(circle at 25% 30%,rgba(184,132,166,.16) 0 8%,transparent 9%),radial-gradient(circle at 65% 65%,rgba(184,132,166,.13) 0 10%,transparent 11%),radial-gradient(circle at 70% 25%,rgba(184,132,166,.1) 0 6%,transparent 7%)}
+.cloud{position:absolute;width:260px;height:70px;border-radius:50%;background:rgba(122,91,145,.1);filter:blur(5px)}
+.cloud:before,.cloud:after{content:"";position:absolute;border-radius:50%;background:inherit}
+.cloud:before{width:130px;height:90px;left:35px;bottom:5px}.cloud:after{width:110px;height:75px;right:25px;bottom:8px}
+.c1{left:-60px;top:25%;transform:scale(1.2)}.c2{right:-80px;top:48%;transform:scale(.9)}
+.sakura{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.petal{position:absolute;width:10px;height:7px;background:linear-gradient(135deg,#ffd2e8,#ff6eae);border-radius:100% 0 100% 0;opacity:.8;filter:drop-shadow(0 0 5px rgba(255,105,183,.5));animation:fall linear infinite}
+.p1{left:8%;animation-duration:9s;animation-delay:-2s}.p2{left:18%;animation-duration:12s;animation-delay:-7s}.p3{left:30%;animation-duration:10s;animation-delay:-4s}.p4{left:44%;animation-duration:14s;animation-delay:-10s}.p5{left:57%;animation-duration:11s;animation-delay:-6s}.p6{left:69%;animation-duration:13s;animation-delay:-3s}.p7{left:81%;animation-duration:9s;animation-delay:-5s}.p8{left:92%;animation-duration:15s;animation-delay:-9s}
+@keyframes fall{0%{transform:translate3d(0,-10vh,0) rotate(0deg)}35%{margin-left:55px}70%{margin-left:-35px}100%{transform:translate3d(0,110vh,0) rotate(420deg)}}
+.stars{position:absolute;inset:0;background-image:radial-gradient(circle,rgba(255,220,241,.8) 0 1px,transparent 1.5px),radial-gradient(circle,rgba(255,154,211,.55) 0 1px,transparent 1.5px);background-size:150px 150px,230px 230px;background-position:20px 30px,100px 80px;opacity:.6;animation:stars 18s linear infinite}
+@keyframes stars{to{background-position:170px 180px,-30px -100px}}
+.torii{position:absolute;bottom:-8px;left:50%;width:min(620px,75vw);height:270px;transform:translateX(-50%);opacity:.2}
+.torii:before{content:"";position:absolute;left:7%;right:7%;top:22px;height:15px;background:#160b1e;box-shadow:0 -20px 0 -3px #160b1e}
+.torii:after{content:"";position:absolute;left:18%;right:18%;top:36px;height:234px;border-left:13px solid #160b1e;border-right:13px solid #160b1e;box-shadow:inset 0 0 0 0 #160b1e}
+.ground{position:absolute;left:0;right:0;bottom:0;height:32%;background:linear-gradient(180deg,transparent,rgba(4,3,11,.7) 35%,#04030a 100%)}
+.content{position:relative;z-index:5;width:min(650px,90vw);height:100%;margin:auto;display:flex;align-items:center;justify-content:center;text-align:center;padding-bottom:4vh}
+.card{position:relative;padding:42px 45px 38px;border:1px solid rgba(255,130,194,.3);background:linear-gradient(180deg,rgba(15,9,27,.62),rgba(6,5,15,.74));backdrop-filter:blur(8px);box-shadow:0 0 70px rgba(255,74,174,.1),inset 0 0 40px rgba(255,105,183,.025)}
+.card:before,.card:after{content:"";position:absolute;inset:7px;border:1px solid rgba(255,125,190,.1);pointer-events:none}
+.symbol{font-family:"Cormorant Garamond",serif;color:var(--pink2);font-size:18px;letter-spacing:.4em;margin-left:.4em;text-shadow:0 0 15px rgba(255,105,183,.7)}
+.small{margin:16px 0 2px;font:500 11px Poppins,sans-serif;letter-spacing:.38em;color:#d4bfd1}
+h1{margin:0;font:400 clamp(70px,12vw,105px)/1 "Great Vibes",cursive;color:#ffacd4;text-shadow:0 0 20px rgba(255,82,175,.5),0 0 55px rgba(255,82,175,.18)}
+.jp{margin:2px 0 20px;font:400 22px "Cormorant Garamond",serif;letter-spacing:.45em;color:#e5c9dc}
+.line{display:flex;align-items:center;gap:12px;justify-content:center;color:#ff82be}.line span{width:80px;height:1px;background:linear-gradient(90deg,transparent,#ff82be)}.line span:last-child{background:linear-gradient(90deg,#ff82be,transparent)}
+.message{margin:20px 0 26px;color:#cbb8ca;font:300 13px/1.8 Poppins,sans-serif}
+.enter{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-width:205px;padding:13px 24px;border:1px solid rgba(255,125,193,.55);background:linear-gradient(135deg,rgba(255,105,183,.18),rgba(112,58,130,.16));color:#ffe8f4;text-decoration:none;font:500 11px Poppins,sans-serif;letter-spacing:.12em;transition:.3s;box-shadow:0 0 20px rgba(255,91,178,.08)}
+.enter:hover{transform:translateY(-3px);background:linear-gradient(135deg,rgba(255,105,183,.3),rgba(112,58,130,.22));box-shadow:0 0 30px rgba(255,91,178,.25);border-color:#ff91c7}
+.enter span{color:#ff91c7}
+.footer{position:absolute;bottom:22px;left:0;right:0;text-align:center;color:#8f7a90;font:10px Poppins,sans-serif;letter-spacing:.08em}
+@media(max-width:600px){.moon{right:-3%;top:8%;width:135px;height:135px}.card{padding:34px 20px 30px;width:100%}.small{font-size:9px;letter-spacing:.25em}h1{font-size:75px}.jp{font-size:18px}.message{font-size:12px}.torii{width:110vw;height:220px}.enter{width:100%}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 </style>
 </head>
 <body>
-<main class="card">
-<div class="star">✦</div>
-<div class="kicker">A LITTLE SOMETHING FOR</div>
+<div class="scene">
+<div class="stars"></div>
+<div class="moon"></div>
+<div class="cloud c1"></div>
+<div class="cloud c2"></div>
+<div class="sakura"><i class="petal p1"></i><i class="petal p2"></i><i class="petal p3"></i><i class="petal p4"></i><i class="petal p5"></i><i class="petal p6"></i><i class="petal p7"></i><i class="petal p8"></i></div>
+<div class="torii"></div>
+<div class="ground"></div>
+<div class="content">
+<div class="card">
+<div class="symbol">✦ ✧ ✦</div>
+<div class="small">A LITTLE SOMETHING FOR</div>
 <h1>Ruby</h1>
-<p>There's something waiting for you.<br>Ready to see it? ♡</p>
-<a class="enter" href="birthday.html">OPEN YOUR SURPRISE ✦</a>
-</main>
+<div class="jp">ルビー</div>
+<div class="line"><span></span>✦<span></span></div>
+<p class="message">Under the same moon and beneath a sky full of stars,<br>there's something special waiting just for you.</p>
+<a class="enter" href="birthday.html">OPEN YOUR SURPRISE <span>✦</span></a>
+</div>
+</div>
+<div class="footer">君のために ✦ Made with love for Ruby</div>
+</div>
 </body>
 </html>
+```
