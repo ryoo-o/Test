@@ -43,8 +43,8 @@ button{-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none;-webki
 .diamond:hover{transform:rotate(45deg) scale(1.1);background:rgba(255,81,175,.08);box-shadow:0 0 22px rgba(255,80,178,.26)}
 .jp-sign{position:absolute;right:7.7%;top:138px;z-index:5;width:clamp(82px,8vw,120px);height:clamp(230px,31vw,390px);object-fit:contain;object-position:center;filter:drop-shadow(0 0 12px rgba(255,255,255,.16)) drop-shadow(0 0 18px rgba(255,66,176,.18));pointer-events:none}
 
-.about-character{position:relative;z-index:7;width:100%;height:0;display:flex;justify-content:flex-start;align-items:flex-end;padding-left:18px;pointer-events:none}
-.about-character img{display:block;width:min(280px,25vw);height:auto;max-height:300px;object-fit:contain;transform:translate(0,-5px);filter:drop-shadow(0 0 12px rgba(255,105,183,.35)) drop-shadow(0 10px 20px rgba(0,0,0,.35))}
+.about-character{position:relative;z-index:7;width:100%;height:175px;margin-top:-175px;display:flex;justify-content:flex-start;align-items:flex-end;padding-left:18px;pointer-events:none}
+.about-character img{display:block;width:min(210px,20vw);height:auto;max-height:175px;object-fit:contain;transform:translate(0,-5px);filter:drop-shadow(0 0 12px rgba(255,105,183,.35)) drop-shadow(0 10px 20px rgba(0,0,0,.35))}
 
 .dashboard{position:relative;z-index:6;display:grid;grid-template-columns:1fr 1fr;gap:16px;padding:7px 3vw 25px;margin-top:-8px;background:linear-gradient(to bottom,rgba(4,3,11,.15),rgba(4,3,11,.72) 18%,rgba(4,3,11,1) 90%);scroll-margin-top:70px}
 .panel{position:relative;min-width:0;min-height:300px;border:1px solid var(--line);background:linear-gradient(180deg,rgba(16,10,30,.78),rgba(7,5,17,.86));box-shadow:var(--shadow);overflow:hidden}
@@ -206,8 +206,8 @@ body{min-width:0}
 .jp-sign{top:158px;right:14px;width:74px;height:220px}
 .quick-links{gap:18px}
 .diamond{width:43px;height:43px}
-.about-character{height:0;justify-content:flex-start;padding-left:10px}
-.about-character img{width:min(230px,45vw);max-height:240px;transform:translate(0,-5px)}
+.about-character{height:145px;margin-top:-145px;justify-content:flex-start;padding-left:10px}
+.about-character img{width:min(180px,40vw);max-height:145px;transform:translate(0,-5px)}
 .dashboard{grid-template-columns:1fr;padding:9px 14px 20px}
 .panel{min-height:auto}
 .about-grid{grid-template-columns:36% 64%;gap:14px}
