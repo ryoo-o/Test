@@ -236,7 +236,7 @@ body{min-width:0}
 .quote{font-size:13px;margin-top:14px}
 .volume-row{max-width:170px;margin-top:10px}
 .birthday-message-section{padding:48px 20px 65px;background:linear-gradient(180deg,rgba(5,3,13,.82),rgba(5,3,13,.7)),linear-gradient(90deg,rgba(5,3,13,.88),rgba(5,3,13,.58) 50%,rgba(5,3,13,.84)),url("assets/birthday-wish.jpg") center/cover no-repeat}
-.birthday-message-card{padding:34px 22px;background:linear-gradient(180deg,rgba(16,10,30,.66),rgba(7,5,17,.76))}
+.birthday-message-card{position:relative;max-width:900px;margin:auto;padding:44px 55px;text-align:center;border:1px solid rgba(239,103,181,.37);background:linear-gradient(180deg,rgba(10,6,20,.62),rgba(7,4,15,.78)),url("assets/birthday-wish.jpg") center/cover no-repeat;box-shadow:0 0 35px rgba(255,64,164,.12);overflow:hidden}
 .birthday-message-stars{font-size:15px}
 .birthday-message-title{font-size:31px}
 .birthday-message-script{font-size:29px}
