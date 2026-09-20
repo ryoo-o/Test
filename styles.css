@@ -43,7 +43,7 @@ button{-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none;-webki
 .panel{position:relative;min-width:0;min-height:300px;border:1px solid var(--line);background:linear-gradient(180deg,rgba(16,10,30,.78),rgba(7,5,17,.86));box-shadow:var(--shadow);overflow:visible}
 .panel:before,.panel:after{content:"";position:absolute;inset:7px;border:1px solid rgba(225,89,173,.14);pointer-events:none}
 .about-panel{position:relative;padding:7px 22px 18px}
-.about-character{position:absolute;z-index:10;top:-92px;left:-18px;width:125px;height:125px;margin:0;padding:0;display:block;pointer-events:none}
+.about-character{position:absolute;z-index:10;top:-105px;left:3vw;width:190px;height:190px;margin:0;padding:0;display:block;pointer-events:none}
 .about-character img{display:block;width:100%;height:100%;max-height:none;object-fit:contain;object-position:center;transform:none}
 .panel-title{position:relative;z-index:2;text-align:center;margin:14px 0 8px;font:600 18px var(--display);letter-spacing:.05em}
 .about-grid{display:grid;grid-template-columns:44% 56%;align-items:center;gap:18px;margin-top:16px}
