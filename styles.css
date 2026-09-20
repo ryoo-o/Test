@@ -114,6 +114,16 @@ input[type=range]::-moz-range-thumb{width:12px;height:12px;border:0;border-radiu
 .volume-row{grid-column:1/-1;display:flex;gap:8px;align-items:center;max-width:190px;width:100%;margin:12px auto 0;color:#a98b9f;font-size:12px}
 .volume-row input{flex:1}
 
+.birthday-message-section{position:relative;z-index:5;padding:60px 7vw 80px;background:radial-gradient(circle at 50% 40%,rgba(255,75,173,.07),transparent 52%)}
+.birthday-message-card{position:relative;max-width:900px;margin:auto;padding:44px 55px;text-align:center;border:1px solid rgba(239,103,181,.37);background:linear-gradient(180deg,rgba(16,10,30,.78),rgba(7,5,17,.92));box-shadow:0 0 35px rgba(255,64,164,.12);overflow:hidden}
+.birthday-message-card:before,.birthday-message-card:after{content:"";position:absolute;inset:8px;border:1px solid rgba(225,89,173,.14);pointer-events:none}
+.birthday-message-stars{position:relative;z-index:2;color:#ff8bc4;font:400 18px var(--display);letter-spacing:.12em;text-shadow:0 0 12px rgba(255,91,180,.45)}
+.birthday-message-title{position:relative;z-index:2;margin-top:8px;color:#f8ddec;font:500 clamp(30px,4vw,48px) var(--display);letter-spacing:.04em}
+.birthday-message-script{position:relative;z-index:2;margin-top:8px;color:#ff8fc6;font:400 clamp(27px,3vw,39px) var(--script);text-shadow:0 0 12px rgba(255,101,187,.3)}
+.birthday-message-card p{position:relative;z-index:2;max-width:720px;margin:24px auto 0;color:#d7c9d7;font:400 14px/2 var(--sans)}
+.birthday-message-card .birthday-final{margin-top:28px;color:#f1d7e7;font:400 17px/1.8 var(--display)}
+.birthday-final span{color:#ff8dc5;font-family:var(--script);font-size:25px}
+
 .content-section{position:relative;z-index:5;padding:84px 7vw;min-height:400px;background:radial-gradient(circle at 50% 30%,rgba(255,75,173,.06),transparent 45%)}
 .section-heading{display:flex;align-items:center;justify-content:center;gap:22px}
 .section-heading h2{margin:0;font:500 clamp(30px,4vw,52px) var(--display);letter-spacing:.13em}
@@ -225,6 +235,14 @@ body{min-width:0}
 .visualizer{height:18px;margin-top:6px}
 .quote{font-size:13px;margin-top:14px}
 .volume-row{max-width:170px;margin-top:10px}
+.birthday-message-section{padding:48px 20px 65px}
+.birthday-message-card{padding:34px 22px}
+.birthday-message-stars{font-size:15px}
+.birthday-message-title{font-size:31px}
+.birthday-message-script{font-size:29px}
+.birthday-message-card p{font-size:12px;line-height:1.9}
+.birthday-message-card .birthday-final{font-size:15px}
+.birthday-final span{font-size:23px}
 .content-section{padding:75px 20px}
 .gallery-grid{grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-rows:170px}
 .gallery-item.tall{grid-column:span 2}
