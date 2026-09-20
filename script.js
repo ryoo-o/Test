@@ -30,7 +30,7 @@ const sectionObserver=new IntersectionObserver(es=>{
 const v=es.filter(e=>e.isIntersecting).sort((a,b)=>b.intersectionRatio-a.intersectionRatio)[0];
 if(v?.target.id)setActive(v.target.id)
 },{rootMargin:"-25% 0px -55% 0px",threshold:[0,.15,.35,.6]});
-sections.forEach(s=>sectionObserver.observe(s));
+sections.forEach(s=>sectionObserver.observe(s))
 }
 
 $$(".nav a,.quick-links a,.brand").forEach(a=>a.addEventListener("click",e=>{
