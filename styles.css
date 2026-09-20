@@ -43,8 +43,8 @@ button{-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none;-webki
 .panel{position:relative;min-width:0;min-height:300px;border:1px solid var(--line);background:linear-gradient(180deg,rgba(16,10,30,.78),rgba(7,5,17,.86));box-shadow:var(--shadow);overflow:visible}
 .panel:before,.panel:after{content:"";position:absolute;inset:7px;border:1px solid rgba(225,89,173,.14);pointer-events:none}
 .about-panel{position:relative;padding:7px 22px 18px}
-.about-character{position:absolute;z-index:10;top:-58px;left:38px;width:105px;height:105px;margin:0;padding:0;display:block;pointer-events:none}
-.about-character img{display:block;width:100%;height:100%;max-height:none;object-fit:contain;transform:none}
+.about-character{position:absolute;z-index:10;top:-92px;left:-18px;width:125px;height:125px;margin:0;padding:0;display:block;pointer-events:none}
+.about-character img{display:block;width:100%;height:100%;max-height:none;object-fit:contain;object-position:center;transform:none}
 .panel-title{position:relative;z-index:2;text-align:center;margin:14px 0 8px;font:600 18px var(--display);letter-spacing:.05em}
 .about-grid{display:grid;grid-template-columns:44% 56%;align-items:center;gap:18px;margin-top:16px}
 .portrait-wrap{width:min(210px,100%);aspect-ratio:1;border-radius:50%;overflow:hidden;border:1px solid rgba(255,137,202,.5);box-shadow:0 0 28px rgba(255,64,167,.22);margin:auto}
@@ -203,8 +203,8 @@ body{min-width:0}
 .diamond{width:43px;height:43px}
 .dashboard{grid-template-columns:1fr;padding:78px 14px 20px}
 .about-panel{padding:7px 18px 18px}
-.about-character{position:absolute;z-index:10;top:-47px;left:22px;width:88px;height:88px;margin:0;padding:0;display:block;pointer-events:none}
-.about-character img{display:block;width:100%;height:100%;max-height:none;object-fit:contain;transform:none}
+.about-character{position:absolute;z-index:10;top:-72px;left:-10px;width:100px;height:100px;margin:0;padding:0;display:block;pointer-events:none}
+.about-character img{display:block;width:100%;height:100%;max-height:none;object-fit:contain;object-position:center;transform:none}
 .panel-title{margin-top:10px}
 .about-grid{grid-template-columns:36% 64%;gap:14px}
 .portrait-wrap{width:min(170px,100%)}
