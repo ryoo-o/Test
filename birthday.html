@@ -11,12 +11,17 @@
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+
 <div id="stars" aria-hidden="true"></div>
 <div class="cursor-glow" aria-hidden="true"></div>
 
 <header class="site-header">
 <a class="brand" href="#home" aria-label="Ruby home"><span>Ruby</span>✦</a>
-<button class="menu-toggle" id="menuToggle" aria-label="Open menu" aria-expanded="false" aria-controls="mainNav"><span></span><span></span><span></span></button>
+
+<button class="menu-toggle" id="menuToggle" aria-label="Open menu" aria-expanded="false" aria-controls="mainNav">
+<span></span><span></span><span></span>
+</button>
+
 <nav class="nav" id="mainNav" aria-label="Primary">
 <a href="#home" class="active">HOME</a>
 <a href="#about">ABOUT</a>
@@ -27,111 +32,314 @@
 </header>
 
 <main>
+
 <section id="home" class="hero section-anchor">
-<div class="hero-bg"><video class="hero-video" autoplay muted loop playsinline preload="metadata" aria-hidden="true"><source src="assets/hero.mp4" type="video/mp4"></video></div>
+
+<div class="hero-bg">
+<video class="hero-video" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
+<source src="assets/hero.mp4" type="video/mp4">
+</video>
+</div>
+
 <div class="hero-vignette"></div>
+
 <div class="hero-content">
 <div class="hero-copy">
+
 <p class="eyebrow">HAPPY BIRTHDAY</p>
+
 <h1>Ruby<span class="sparkle">✧</span></h1>
-<p class="script">Shine like the star you were born to be. <span>☆</span></p>
-<p class="hero-note">To the brightest star in our lives.<br>May your year be filled with love, happiness,<br class="desktop-only">and all the things that make you smile.</p>
+
+<p class="script">
+Shine like the star you were born to be. <span>☆</span>
+</p>
+
+<p class="hero-note">
+To the brightest star in our lives.<br>
+May your year be filled with love, happiness,<br class="desktop-only">
+and all the things that make you smile.
+</p>
+
 <div class="quick-links">
 <a href="#about" class="diamond" aria-label="About Ruby">♡</a>
 <button class="diamond" id="quickMusic" aria-label="Play music">♫</button>
 <a href="#gallery" class="diamond" aria-label="Gallery">✦</a>
 </div>
+
 </div>
 </div>
+
 <img class="jp-sign" src="assets/name.png" alt="Ruby name artwork">
+
 </section>
+
 
 <section class="dashboard section-anchor" id="about">
+
 <div class="panel about-panel">
-<div class="about-character" aria-hidden="true"><img src="assets/character.png" alt=""></div>
-<div class="panel-title">✦ &nbsp;ABOUT RUBY&nbsp; ✦</div>
+
+<!-- Character attached to the top of the About Ruby panel -->
+<div class="about-character" aria-hidden="true">
+<img src="assets/character.png" alt="">
+</div>
+
+<div class="panel-title">
+✦ &nbsp;ABOUT RUBY&nbsp; ✦
+</div>
+
 <div class="about-grid">
-<div class="portrait-wrap"><img src="https://cdn.discordapp.com/avatars/1378992137105838175/6e0fdad46f35cf1b37b19c2997560d92.jpg?size=1024" alt="Ruby" loading="eager"></div>
+
+<div class="portrait-wrap">
+<img src="https://cdn.discordapp.com/avatars/1378992137105838175/6e0fdad46f35cf1b37b19c2997560d92.jpg?size=1024" alt="Ruby" loading="eager">
+</div>
+
 <div class="about-copy">
-<p>A kind soul with a heart of gold.<br>You light up every room<br>just like <span>Ruby Hoshino!</span></p>
-<p>You’re talented, adorable,<br>and absolutely amazing<br>just the way you are.</p>
+<p>
+A kind soul with a heart of gold.<br>
+You light up every room<br>
+just like <span>Ruby Hoshino!</span>
+</p>
+
+<p>
+You’re talented, adorable,<br>
+and absolutely amazing<br>
+just the way you are.
+</p>
 </div>
+
 </div>
+
 <div class="signature">Ruby</div>
 <div class="heart-float" aria-hidden="true">♥</div>
+
 </div>
+
 
 <div class="panel player-panel" id="playerPanel">
-<div class="album-art"><img src="assets/star-train.jpg" alt="Star Train cover art"><span class="album-sheen" aria-hidden="true"></span></div>
+
+<div class="album-art">
+<img src="assets/star-train.jpg" alt="Star Train cover art">
+<span class="album-sheen" aria-hidden="true"></span>
+</div>
+
 <div class="track-info">
+
 <div class="track-title">IDOL</div>
 <div class="track-artist">YOASOBI - アイドル (Idol)</div>
-<button class="track-like" id="likeTrack" aria-label="Favorite track" aria-pressed="false">♥</button>
+
+<button class="track-like" id="likeTrack" aria-label="Favorite track" aria-pressed="false">
+♥
+</button>
+
 </div>
-<div class="progress-row"><span id="currentTime">0:00</span><input id="seek" type="range" min="0" max="100" value="0" step="0.1" aria-label="Music progress"><span id="duration">0:00</span></div>
+
+<div class="progress-row">
+<span id="currentTime">0:00</span>
+<input id="seek" type="range" min="0" max="100" value="0" step="0.1" aria-label="Music progress">
+<span id="duration">0:00</span>
+</div>
+
 <div class="controls">
+
 <button aria-label="Shuffle" class="small-control toggle-control" id="shuffleBtn" aria-pressed="false">⤨</button>
+
 <button aria-label="Previous" class="small-control" id="prevBtn">◀</button>
+
 <button aria-label="Play or pause" class="play-btn" id="playBtn">▶</button>
+
 <button aria-label="Next" class="small-control" id="nextBtn">▶</button>
+
 <button aria-label="Repeat" class="small-control toggle-control" id="repeatBtn" aria-pressed="false">↻</button>
+
 </div>
+
 <div class="visualizer" id="visualizer" aria-hidden="true">
-<i style="--i:0"></i><i style="--i:1"></i><i style="--i:2"></i><i style="--i:3"></i><i style="--i:4"></i><i style="--i:5"></i><i style="--i:6"></i><i style="--i:7"></i><i style="--i:8"></i><i style="--i:9"></i><i style="--i:10"></i><i style="--i:11"></i><i style="--i:12"></i><i style="--i:13"></i><i style="--i:14"></i><i style="--i:15"></i><i style="--i:16"></i><i style="--i:17"></i>
+<i style="--i:0"></i>
+<i style="--i:1"></i>
+<i style="--i:2"></i>
+<i style="--i:3"></i>
+<i style="--i:4"></i>
+<i style="--i:5"></i>
+<i style="--i:6"></i>
+<i style="--i:7"></i>
+<i style="--i:8"></i>
+<i style="--i:9"></i>
+<i style="--i:10"></i>
+<i style="--i:11"></i>
+<i style="--i:12"></i>
+<i style="--i:13"></i>
+<i style="--i:14"></i>
+<i style="--i:15"></i>
+<i style="--i:16"></i>
+<i style="--i:17"></i>
 </div>
-<div class="quote">“No matter how dark it gets,<br>you will always shine.” &nbsp; ✦</div>
-<div class="volume-row"><span aria-hidden="true">◒</span><input id="volume" type="range" min="0" max="1" value="0.3" step="0.01" aria-label="Volume"><span aria-hidden="true">♬</span></div>
+
+<div class="quote">
+“No matter how dark it gets,<br>
+you will always shine.” &nbsp; ✦
 </div>
+
+<div class="volume-row">
+<span aria-hidden="true">◒</span>
+<input id="volume" type="range" min="0" max="1" value="0.3" step="0.01" aria-label="Volume">
+<span aria-hidden="true">♬</span>
+</div>
+
+</div>
+
 </section>
+
 
 <section id="gallery" class="content-section section-anchor gallery-section">
-<div class="section-heading"><span>✦</span><h2>GALLERY</h2><span>✦</span></div>
-<div class="gallery-grid">
-<button class="gallery-item tall" data-lightbox="assets/hero.mp4" data-caption="Ruby — the brightest star" aria-label="View Ruby birthday video"><video src="assets/hero.mp4" muted loop playsinline preload="metadata" aria-label="Ruby birthday hero"></video></button>
-<button class="gallery-item" data-lightbox="assets/ruby.jpg" data-caption="Ruby" aria-label="View Ruby portrait"><img src="assets/ruby.jpg" alt="Ruby portrait"></button>
-<button class="gallery-item" data-lightbox="assets/star-train.jpg" data-caption="Star Train — B Komachi" aria-label="View Star Train cover"><img src="assets/star-train.jpg" alt="Star Train cover"></button>
+
+<div class="section-heading">
+<span>✦</span>
+<h2>GALLERY</h2>
+<span>✦</span>
 </div>
+
+<div class="gallery-grid">
+
+<button class="gallery-item tall" data-lightbox="assets/hero.mp4" data-caption="Ruby — the brightest star" aria-label="View Ruby birthday video">
+<video src="assets/hero.mp4" muted loop playsinline preload="metadata" aria-label="Ruby birthday hero"></video>
+</button>
+
+<button class="gallery-item" data-lightbox="assets/ruby.jpg" data-caption="Ruby" aria-label="View Ruby portrait">
+<img src="assets/ruby.jpg" alt="Ruby portrait">
+</button>
+
+<button class="gallery-item" data-lightbox="assets/star-train.jpg" data-caption="Star Train — B Komachi" aria-label="View Star Train cover">
+<img src="assets/star-train.jpg" alt="Star Train cover">
+</button>
+
+</div>
+
 </section>
+
 
 <section id="message" class="content-section section-anchor birthday-section">
-<div class="section-heading"><span>✦</span><h2>FOR MY SIS</h2><span>✦</span></div>
-<div class="birthday-card">
-<div class="birthday-star">✦</div>
-<h2>Happy Birthday, Ruby! ♡</h2>
-<p>To my amazing sis,</p>
-<p>Thank you for being such a wonderful part of my life. I hope this birthday brings you countless smiles, beautiful memories, and all the happiness you deserve.</p>
-<p>Keep shining, keep smiling, and always remember just how special you are. May this new year of your life be filled with amazing moments, love, laughter, and dreams coming true.</p>
-<div class="birthday-sign">With love, always ♡</div>
+
+<div class="section-heading">
+<span>✦</span>
+<h2>FOR MY SIS</h2>
+<span>✦</span>
 </div>
+
+<div class="birthday-card">
+
+<div class="birthday-star">✦</div>
+
+<h2>Happy Birthday, Ruby! ♡</h2>
+
+<p>To my amazing sis,</p>
+
+<p>
+Thank you for being such a wonderful part of my life.
+I hope this birthday brings you countless smiles,
+beautiful memories, and all the happiness you deserve.
+</p>
+
+<p>
+Keep shining, keep smiling, and always remember just how special you are.
+May this new year of your life be filled with amazing moments,
+love, laughter, and dreams coming true.
+</p>
+
+<div class="birthday-sign">
+With love, always ♡
+</div>
+
+</div>
+
 </section>
+
 </main>
 
+
 <footer>
-<div class="footer-line"><span></span><span>〽</span><span></span></div>
-<div class="footer-quote"><span>✦</span>「君は完璧で究極のアイドル」<span>✦</span><small>You are the perfect, ultimate idol.</small></div>
-<div class="footer-meta"><span>Made with <b>♥</b> for Ruby</span><span>Keep shining, always. ☆</span></div>
+
+<div class="footer-line">
+<span></span>
+<span>〽</span>
+<span></span>
+</div>
+
+<div class="footer-quote">
+<span>✦</span>
+「君は完璧で究極のアイドル」
+<span>✦</span>
+<small>You are the perfect, ultimate idol.</small>
+</div>
+
+<div class="footer-meta">
+<span>Made with <b>♥</b> for Ruby</span>
+<span>Keep shining, always. ☆</span>
+</div>
+
 </footer>
+
 
 <audio id="audio" preload="metadata"></audio>
 
-<div id="musicToast" class="music-toast" role="status" aria-live="polite">Place your music file at <b>assets/music.mp3</b> to activate the player.</div>
+<div id="musicToast" class="music-toast" role="status" aria-live="polite">
+Place your music file at <b>assets/music.mp3</b> to activate the player.
+</div>
+
 
 <div class="music-prompt" id="musicPrompt" aria-hidden="true">
+
 <div class="music-prompt-card" role="dialog" aria-modal="true" aria-labelledby="musicPromptTitle">
+
 <div class="music-prompt-star">✦</div>
+
 <h2 id="musicPromptTitle">Hey, sis! ♡</h2>
-<p>Would you like to play the<br><span>Oshi no Ko “IDOL”</span> song?</p>
-<div class="music-prompt-actions"><button id="musicPromptPlay">PLAY IDOL ♫</button><button id="musicPromptLater">MAYBE LATER</button></div>
-</div>
+
+<p>
+Would you like to play the<br>
+<span>Oshi no Ko “IDOL”</span> song?
+</p>
+
+<div class="music-prompt-actions">
+<button id="musicPromptPlay">PLAY IDOL ♫</button>
+<button id="musicPromptLater">MAYBE LATER</button>
 </div>
 
-<div class="modal" id="lightbox" aria-hidden="true"><button class="modal-close" aria-label="Close">×</button><div class="modal-media" id="modalMedia"></div><div class="modal-caption" id="modalCaption"></div></div>
+</div>
+
+</div>
+
+
+<div class="modal" id="lightbox" aria-hidden="true">
+
+<button class="modal-close" aria-label="Close">×</button>
+
+<div class="modal-media" id="modalMedia"></div>
+
+<div class="modal-caption" id="modalCaption"></div>
+
+</div>
+
 
 <div class="modal" id="characterModal" aria-hidden="true">
+
 <button class="modal-close" aria-label="Close">×</button>
-<div class="character-modal-card"><div class="character-modal-media" id="characterModalMedia"></div><div><h3 id="characterModalName"></h3><p id="characterModalSub"></p><p>Favorite character ✦</p></div></div>
+
+<div class="character-modal-card">
+
+<div class="character-modal-media" id="characterModalMedia"></div>
+
+<div>
+<h3 id="characterModalName"></h3>
+<p id="characterModalSub"></p>
+<p>Favorite character ✦</p>
 </div>
 
+</div>
+
+</div>
+
+
 <script src="script.js"></script>
+
 </body>
 </html>
